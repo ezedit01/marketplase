@@ -56,7 +56,7 @@ export default async (request, context) => {
 
   const url = new URL(request.url)
   const slug = url.pathname.replace('/producto/', '').replace(/\/$/, '')
-  const appName = Deno.env.get('APP_NAME') || 'Marketplace del Pueblo'
+  const appName = Deno.env.get('APP_NAME') || 'PUNTO'
   const supabaseUrl = Deno.env.get('SUPABASE_URL')
   const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')
 

@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SearchIcon, PlusIcon, UserIcon } from '../ui/Icons'
 import { useAuth } from '../../hooks/useAuth'
+import Logo from './Logo'
 import './Header.css'
-
-const APP_NAME = import.meta.env.VITE_APP_NAME || 'Marketplace del Pueblo'
 
 export default function Header() {
   const [query, setQuery] = useState('')
@@ -20,7 +19,7 @@ export default function Header() {
     <header className="header">
       <div className="container header-inner">
         <Link to="/" className="header-logo">
-          {APP_NAME}
+          <Logo variant="header" />
         </Link>
 
         <form className="header-search" onSubmit={handleSearchSubmit}>

@@ -1,6 +1,9 @@
-# Marketplace del Pueblo — MVP
+# PUNTO — by KREA
 
-Marketplace local de compra/venta. Publicás, la gente busca, contacta por WhatsApp.
+**PUNTO** es el lugar digital de Sol de Julio. La primera etapa (esta) es el
+Marketplace: publicás, la gente busca, contacta por WhatsApp. La arquitectura
+está preparada para crecer hacia negocios, servicios, empleos y más — ver
+`ARCHITECTURE.md`.
 
 ## Stack
 
@@ -56,7 +59,7 @@ Por defecto, todo usuario nuevo se crea con `role = 'user'`. Para acceder a `/ad
 2. En Netlify: **Add new site > Import an existing project**.
 3. Netlify va a detectar automáticamente `netlify.toml` (build command, publish dir, redirects de la SPA y la edge function de Open Graph ya están configurados ahí).
 4. Agregá las variables de entorno en **Site settings > Environment variables**:
-   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME` (para el build de la app)
+   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME`, `VITE_APP_BY`, `VITE_APP_TAGLINE` (para el build de la app)
    - `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores, sin el prefijo `VITE_` — los necesita la edge function de previews, que corre en un runtime separado del build de Vite y no tiene acceso a las variables `VITE_*`)
 
 ### Verificar que las previews de WhatsApp/Facebook funcionen

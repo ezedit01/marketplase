@@ -1,4 +1,4 @@
-const APP_NAME = import.meta.env.VITE_APP_NAME || 'Marketplace del Pueblo'
+const APP_NAME = import.meta.env.VITE_APP_NAME || 'PUNTO'
 
 // Limpia el número para que quede solo con dígitos (formato internacional sin +)
 function cleanPhoneNumber(phone) {

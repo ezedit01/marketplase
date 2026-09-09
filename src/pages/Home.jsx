@@ -1,4 +1,5 @@
 import { useListings } from '../hooks/useListings'
+import { APP_TAGLINE } from '../components/layout/Logo'
 import CategoryPills from '../components/listing/CategoryPills'
 import ListingCard from '../components/listing/ListingCard'
 import './Home.css'
@@ -10,8 +11,8 @@ export default function Home() {
     <div className="home">
       <section className="hero">
         <div className="container">
-          <h1>Comprá y vendé en tu pueblo, fácil.</h1>
-          <p>Publicá gratis y encontrá lo que buscás cerca tuyo.</p>
+          <h1>{APP_TAGLINE}</h1>
+          <p>Por ahora, comprá y vendé fácil en tu pueblo. Pronto, mucho más.</p>
         </div>
       </section>
 

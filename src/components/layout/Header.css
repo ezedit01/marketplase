@@ -14,10 +14,8 @@
 }
 
 .header-logo {
-  font-weight: 800;
-  font-size: 19px;
-  white-space: nowrap;
   flex-shrink: 0;
+  display: inline-flex;
 }
 
 .header-search {
