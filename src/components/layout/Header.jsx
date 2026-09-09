@@ -8,7 +8,7 @@ import './Header.css'
 export default function Header() {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
 
   function handleSearchSubmit(e) {
     e.preventDefault()
@@ -39,7 +39,11 @@ export default function Header() {
           </Link>
 
           <Link to={user ? '/perfil' : '/ingresar'} className="header-account-btn" aria-label="Cuenta">
-            <UserIcon size={20} />
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="" className="header-account-avatar" />
+            ) : (
+              <UserIcon size={20} />
+            )}
           </Link>
         </div>
       </div>

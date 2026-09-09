@@ -8,6 +8,7 @@ import ListingDetail from './pages/ListingDetail'
 import CreateListing from './pages/CreateListing'
 import Auth from './pages/Auth'
 import Profile from './pages/Profile'
+import EditProfile from './pages/EditProfile'
 import Favorites from './pages/Favorites'
 import AdminLayout from './pages/Admin/AdminLayout'
 import Dashboard from './pages/Admin/Dashboard'
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/ingresar" element={<Auth mode="login" />} />
         <Route path="/registro" element={<Auth mode="register" />} />
         <Route path="/perfil" element={<Profile />} />
+        <Route path="/perfil/editar" element={<EditProfile />} />
         <Route path="/perfil/favoritos" element={<Favorites />} />
 
         <Route path="/admin" element={<AdminLayout />}>

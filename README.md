@@ -24,6 +24,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 2. Copiá y pegá todo el contenido de `supabase/schema.sql`.
 3. Ejecutalo (Run). Esto crea las tablas, las políticas de seguridad (RLS) y el bucket de imágenes.
 4. Después corré también `supabase/migrations/002_favorites_and_alerts.sql` en una query nueva. Agrega favoritos y deja preparada (sin usar todavía) la tabla de alertas de búsqueda para una etapa futura.
+5. Por último, `supabase/migrations/003_avatars.sql`. Crea el bucket de storage para fotos de perfil (la columna ya existía, faltaba el bucket).
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 

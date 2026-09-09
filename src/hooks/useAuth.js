@@ -50,5 +50,18 @@ export function useAuth() {
     return supabase.auth.signOut()
   }
 
-  return { user, profile, loading, signUp, signIn, signOut, isAdmin: profile?.role === 'admin' }
+  const refreshProfile = useCallback(() => {
+    if (user?.id) loadProfile(user.id)
+  }, [user, loadProfile])
+
+  return {
+    user,
+    profile,
+    loading,
+    signUp,
+    signIn,
+    signOut,
+    refreshProfile,
+    isAdmin: profile?.role === 'admin',
+  }
 }

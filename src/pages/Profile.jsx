@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
-import { TrashIcon, CheckIcon } from '../components/ui/Icons'
+import { TrashIcon, CheckIcon, EditIcon, UserIcon } from '../components/ui/Icons'
 import './Profile.css'
 
 const TABS = [
@@ -55,11 +55,24 @@ export default function Profile() {
   return (
     <div className="container profile-page">
       <div className="profile-header">
-        <div>
-          <h1>{profile.name}</h1>
-          <p>Miembro desde {new Date(profile.created_at).getFullYear()}</p>
+        <div className="profile-header-identity">
+          <div className="profile-avatar">
+            {profile.avatar_url ? (
+              <img src={profile.avatar_url} alt="" />
+            ) : (
+              <UserIcon size={28} className="profile-avatar-placeholder" />
+            )}
+          </div>
+          <div>
+            <h1>{profile.name}</h1>
+            <p>Miembro desde {new Date(profile.created_at).getFullYear()}</p>
+          </div>
         </div>
         <div className="profile-header-actions">
+          <Link to="/perfil/editar" className="btn btn-outline">
+            <EditIcon size={15} />
+            Editar perfil
+          </Link>
           <Link to="/perfil/favoritos" className="btn btn-outline">
             Mis favoritos
           </Link>
