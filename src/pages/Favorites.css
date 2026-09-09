@@ -1,0 +1,19 @@
+.favorites-page {
+  padding: 24px 20px 60px;
+}
+
+.favorites-header {
+  margin-bottom: 20px;
+}
+
+.favorites-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.favorites-header h1 {
+  font-size: 20px;
+  margin: 0;
+}

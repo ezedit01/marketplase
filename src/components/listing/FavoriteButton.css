@@ -1,0 +1,45 @@
+.favorite-btn {
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.favorite-btn:active {
+  transform: scale(0.9);
+}
+
+.favorite-btn.active {
+  color: #e11d48;
+}
+
+.favorite-btn-card {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.favorite-btn-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.favorite-btn-detail.active {
+  border-color: #e11d48;
+}

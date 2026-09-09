@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[edge_functions]]
+  path = "/producto/*"
+  function = "og-listing"
+
+# Fallback de rutas para la SPA (React Router).
+# Nota: esto no interfiere con la edge function de arriba, que corre antes.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
