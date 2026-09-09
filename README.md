@@ -67,6 +67,14 @@ Por defecto, todo usuario nuevo se crea con `role = 'user'`. Para acceder a `/ad
 
 Una vez deployado, probá una URL de producto en el [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (funciona también para validar cómo la va a leer WhatsApp, que usa el mismo sistema de crawler). Si no aparece la preview esperada, revisá los logs de la edge function `og-listing` en el dashboard de Netlify.
 
+## Logo e identidad visual
+
+- `public/brand/logo-192.png` y `logo-512.png`: el ícono de marca en los tamaños que usa la app (header, footer, previews). Se usan tal cual en `src/components/layout/Logo.jsx`.
+- `public/favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png`: generados a partir del mismo logo, para la pestaña del navegador y accesos directos en celular.
+- `design/logo-master.png`: el archivo original en alta resolución (1254×1254), **no se sube al sitio en producción** — queda solo como referencia para cuando armen la versión vectorial (SVG).
+
+Cuando tengan el SVG definitivo: reemplazá `public/brand/logo-192.png` (o agregá un `logo.svg` nuevo) y actualizá la constante `LOGO_ICON_SRC` en `src/components/layout/Logo.jsx`. El texto "PUNTO" / "by KREA" se renderiza en vivo con CSS (no es parte de la imagen), así que no hay que tocar nada más para que se siga viendo nítido.
+
 ## Estructura del proyecto
 
 ```

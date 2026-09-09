@@ -1,22 +1,26 @@
 .brand-logo {
   display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.brand-logo-icon {
+  border-radius: 22%;
+  flex-shrink: 0;
+  display: block;
+}
+
+.brand-logo-text {
+  display: inline-flex;
   flex-direction: column;
   line-height: 1;
 }
 
 .brand-logo-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: -0.01em;
   color: var(--color-text);
-}
-
-.brand-logo-dot {
-  color: var(--color-accent);
-  flex-shrink: 0;
 }
 
 .brand-logo-by {
@@ -26,18 +30,17 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-top: 2px;
-  margin-left: 15px; /* alinea con el texto, no con el punto */
 }
 
 .brand-logo-footer {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.brand-logo-footer .brand-logo-text {
   align-items: center;
 }
 
 .brand-logo-footer .brand-logo-name {
-  font-size: 22px;
-}
-
-.brand-logo-footer .brand-logo-by {
-  margin-left: 0;
-  margin-top: 4px;
+  font-size: 20px;
 }
