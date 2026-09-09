@@ -11,7 +11,7 @@ export default function AdminListings() {
     setLoading(true)
     const { data } = await supabase
       .from('listings')
-      .select('id, title, slug, price, status, featured, created_at, profiles(name)')
+      .select('id, title, slug, price, status, featured, created_at, profiles!listings_user_id_fkey(name)')
       .order('created_at', { ascending: false })
       .limit(100)
     setListings(data || [])

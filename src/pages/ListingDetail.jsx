@@ -26,7 +26,7 @@ export default function ListingDetail() {
           `
           *,
           listing_images ( id, url, is_main, order_index ),
-          profiles ( name, whatsapp, location, created_at )
+          profiles!listings_user_id_fkey ( name, whatsapp, location, created_at )
         `
         )
         .eq('slug', slug)
