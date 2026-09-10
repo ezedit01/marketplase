@@ -133,7 +133,11 @@ async function buildSitemap(request, env) {
   const staticUrls = [`${origin}/`, `${origin}/buscar`]
 
   let listingUrls = []
-  if (supabaseUrl && supabaseAnonKey) {
+  let debugComment = ''
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    debugComment = '<!-- No se encontraron SUPABASE_URL / SUPABASE_ANON_KEY en las variables de runtime del Worker -->'
+  } else {
     try {
       const query = new URLSearchParams({
         status: 'eq.active',
@@ -144,15 +148,26 @@ async function buildSitemap(request, env) {
       const res = await fetch(`${supabaseUrl}/rest/v1/listings?${query}`, {
         headers: { apikey: supabaseAnonKey, Authorization: `Bearer ${supabaseAnonKey}` },
       })
-      const rows = await res.json()
-      if (Array.isArray(rows)) {
-        listingUrls = rows.map((l) => ({
-          loc: `${origin}/producto/${l.slug}`,
-          lastmod: l.updated_at ? l.updated_at.slice(0, 10) : undefined,
-        }))
+
+      if (!res.ok) {
+        const body = await res.text()
+        debugComment = `<!-- Supabase respondió ${res.status}: ${escapeHtml(body.slice(0, 300))} -->`
+      } else {
+        const rows = await res.json()
+        if (Array.isArray(rows)) {
+          listingUrls = rows.map((l) => ({
+            loc: `${origin}/producto/${l.slug}`,
+            lastmod: l.updated_at ? l.updated_at.slice(0, 10) : undefined,
+          }))
+          if (listingUrls.length === 0) {
+            debugComment = '<!-- Supabase respondió OK pero sin publicaciones activas -->'
+          }
+        } else {
+          debugComment = `<!-- Respuesta inesperada de Supabase: ${escapeHtml(JSON.stringify(rows).slice(0, 300))} -->`
+        }
       }
-    } catch {
-      // si Supabase falla, servimos igual el sitemap con las páginas estáticas
+    } catch (err) {
+      debugComment = `<!-- Error al consultar Supabase: ${escapeHtml(String(err))} -->`
     }
   }
 
@@ -165,6 +180,7 @@ async function buildSitemap(request, env) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticEntries}
 ${listingEntries}
+${debugComment}
 </urlset>`
 
   return new Response(xml, { headers: { 'content-type': 'application/xml; charset=utf-8' } })
