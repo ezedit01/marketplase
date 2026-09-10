@@ -54,7 +54,29 @@ Por defecto, todo usuario nuevo se crea con `role = 'user'`. Para acceder a `/ad
 1. Registrate normalmente en la app.
 2. En Supabase, andá a **Table Editor > profiles**, buscá tu usuario y cambiá `role` a `admin`.
 
-## 6. Deploy en Netlify
+## 6. Deploy
+
+**Recomendado: Cloudflare Pages.** Netlify cambió a un plan gratis medido en
+"créditos" (300/mes, cada deploy a producción gasta 15) que se agota rápido
+mientras estás iterando seguido. Cloudflare Pages tiene ancho de banda
+ilimitado y 500 builds/mes gratis, sin tarjeta — mucho más cómodo para esta
+etapa del proyecto. Dejé el proyecto listo para los dos.
+
+### Deploy en Cloudflare Pages
+
+1. Entrá a [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, y elegí tu repo.
+2. Configuración de build:
+   - **Build command**: `npm run build`
+   - **Build output directory**: `dist`
+3. Cloudflare va a detectar solo la carpeta `functions/` (el equivalente a la edge function de Netlify) y el `public/_redirects` para las rutas de la SPA — no hace falta tocar nada más ahí.
+4. Agregá las variables de entorno en **Settings > Environment variables** (marcá tanto Production como Preview):
+   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME`, `VITE_APP_BY`, `VITE_APP_TAGLINE` (para el build)
+   - `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores sin el prefijo `VITE_` — los usa `functions/producto/[slug].js` para las previews)
+5. Guardá y hacé **Retry deployment** para que tome las variables.
+
+De ahí en adelante, el flujo es idéntico al de Netlify: cada `git push` a `main` dispara un deploy solo.
+
+### Deploy en Netlify (alternativa)
 
 1. Subí el proyecto a un repo de GitHub.
 2. En Netlify: **Add new site > Import an existing project**.
@@ -63,9 +85,11 @@ Por defecto, todo usuario nuevo se crea con `role = 'user'`. Para acceder a `/ad
    - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME`, `VITE_APP_BY`, `VITE_APP_TAGLINE` (para el build de la app)
    - `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores, sin el prefijo `VITE_` — los necesita la edge function de previews, que corre en un runtime separado del build de Vite y no tiene acceso a las variables `VITE_*`)
 
+Si usás Netlify, cuidado con la cantidad de deploys: cada uno gasta créditos del plan gratis. Para probar cambios chicos seguido, conviene revisar en tu carpeta local con `npm run dev` antes de pushear.
+
 ### Verificar que las previews de WhatsApp/Facebook funcionen
 
-Una vez deployado, probá una URL de producto en el [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (funciona también para validar cómo la va a leer WhatsApp, que usa el mismo sistema de crawler). Si no aparece la preview esperada, revisá los logs de la edge function `og-listing` en el dashboard de Netlify.
+Una vez deployado (en cualquiera de los dos), probá una URL de producto en el [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (funciona también para validar cómo la va a leer WhatsApp, que usa el mismo sistema de crawler). Si no aparece la preview esperada, revisá los logs de la function en el dashboard correspondiente (`og-listing` en Netlify, o `producto/[slug]` en Cloudflare Pages > Functions logs).
 
 ## Logo e identidad visual
 
@@ -96,8 +120,11 @@ supabase/
     002_favorites_and_alerts.sql          Favoritos + tabla de alertas
     003_avatars.sql                       Bucket de fotos de perfil
 netlify/
-  edge-functions/og-listing.js  Previews de Open Graph para WhatsApp/Facebook/etc
-netlify.toml                    Config de build, redirects SPA y edge function
+  edge-functions/og-listing.js  Previews de Open Graph para Netlify
+netlify.toml                    Config de build, redirects SPA y edge function (Netlify)
+functions/
+  producto/[slug].js            Previews de Open Graph para Cloudflare Pages (mismo propósito que og-listing.js)
+public/_redirects               Redirects de la SPA (Netlify y Cloudflare Pages usan el mismo formato)
 ARCHITECTURE.md                 Cómo la base actual se prepara para negocios/servicios/etc.
 ```
 
