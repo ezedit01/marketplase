@@ -80,23 +80,36 @@ Cuando tengan el SVG definitivo: reemplazá `public/brand/logo-192.png` (o agreg
 ```
 src/
   components/
-    layout/       Header, BottomNav, Footer
-    listing/      ListingCard, CategoryPills, ReportModal, FavoriteButton
+    layout/       Header, BottomNav, Footer, Logo
+    listing/      ListingCard, CategoryPills, ReportModal, FavoriteButton, SaveAlertButton
     ui/           Icons.jsx (set de íconos SVG)
   pages/
-    Home, Search, ListingDetail, CreateListing, Auth, Profile, Favorites
+    Home, Search, ListingDetail, SellerProfile, CreateListing, Auth
+    Profile, EditProfile, Favorites, History, Alerts
     Admin/        Dashboard, AdminListings, AdminUsers, AdminCategories, AdminReports
   hooks/          useAuth, useListings, useCategories, useFavorites
+  utils/          slug.js, whatsapp.js, viewHistory.js
   lib/            supabaseClient.js
-  utils/          slug.js, whatsapp.js
 supabase/
   schema.sql                              Schema inicial (MVP)
-  migrations/002_favorites_and_alerts.sql Favoritos + preparación de alertas
+  migrations/
+    002_favorites_and_alerts.sql          Favoritos + tabla de alertas
+    003_avatars.sql                       Bucket de fotos de perfil
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para WhatsApp/Facebook/etc
 netlify.toml                    Config de build, redirects SPA y edge function
 ARCHITECTURE.md                 Cómo la base actual se prepara para negocios/servicios/etc.
 ```
+
+### Sobre las alertas de búsqueda
+
+Guardar una alerta (botón "Guardar esta búsqueda" en `/buscar`) es un simple
+insert en `search_alerts`. **No hay avisos automáticos todavía** — la página
+`/perfil/alertas` calcula, en el momento en que el usuario la visita, cuántas
+publicaciones nuevas matchean cada alerta desde que se guardó. Es un modelo
+"pull" (el usuario entra a revisar), no "push" (no mandamos notificaciones).
+Implementar push/email real requiere un cron job (Supabase tiene `pg_cron`)
+más un canal de entrega — se aborda como una pieza aparte cuando haga falta.
 
 ## Qué quedó afuera del MVP (a propósito)
 

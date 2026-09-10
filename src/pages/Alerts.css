@@ -1,0 +1,76 @@
+.alerts-page {
+  padding: 24px 20px 60px;
+  max-width: 600px;
+}
+
+.alerts-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.alerts-page h1 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+.alerts-explainer {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alert-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.alert-row-desc {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.alert-row-count {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.alert-row-count-new {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.alert-row-delete {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: none;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alert-row-delete:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}

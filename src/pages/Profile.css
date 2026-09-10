@@ -64,6 +64,33 @@
   margin: 0;
 }
 
+.profile-quicklinks {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.profile-quicklink {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.profile-quicklink:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
 .profile-page h2 {
   font-size: 17px;
   margin: 0 0 14px;

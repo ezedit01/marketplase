@@ -11,6 +11,8 @@ import Auth from './pages/Auth'
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
 import Favorites from './pages/Favorites'
+import History from './pages/History'
+import Alerts from './pages/Alerts'
 import AdminLayout from './pages/Admin/AdminLayout'
 import Dashboard from './pages/Admin/Dashboard'
 import AdminListings from './pages/Admin/AdminListings'
@@ -33,6 +35,8 @@ export default function App() {
         <Route path="/perfil" element={<Profile />} />
         <Route path="/perfil/editar" element={<EditProfile />} />
         <Route path="/perfil/favoritos" element={<Favorites />} />
+        <Route path="/perfil/historial" element={<History />} />
+        <Route path="/perfil/alertas" element={<Alerts />} />
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />

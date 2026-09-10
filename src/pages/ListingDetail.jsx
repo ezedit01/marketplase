@@ -5,6 +5,7 @@ import { buildWhatsappContactLink, shareListing } from '../utils/whatsapp'
 import { WhatsappIcon, ShareIcon, MapPinIcon, TagIcon, ImageIcon, UserIcon } from '../components/ui/Icons'
 import ReportModal from '../components/listing/ReportModal'
 import FavoriteButton from '../components/listing/FavoriteButton'
+import { recordListingView } from '../utils/viewHistory'
 import './ListingDetail.css'
 
 export default function ListingDetail() {
@@ -36,6 +37,7 @@ export default function ListingDetail() {
       if (data) {
         setListing(data)
         supabase.rpc('increment_listing_views', { listing_id_input: data.id })
+        recordListingView(data.slug)
       }
       setLoading(false)
     }

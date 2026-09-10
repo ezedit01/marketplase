@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useListings } from '../hooks/useListings'
 import { useCategories } from '../hooks/useCategories'
 import ListingCard from '../components/listing/ListingCard'
+import SaveAlertButton from '../components/listing/SaveAlertButton'
 import './Search.css'
 
 export default function Search() {
@@ -16,6 +17,7 @@ export default function Search() {
   const categorySlug = searchParams.get('categoria') || ''
   const condition = searchParams.get('estado') || ''
   const sort = searchParams.get('orden') || 'recent'
+  const onlyWithPhoto = searchParams.get('fotos') === '1'
 
   const activeCategory = categories.find((c) => c.slug === categorySlug)
 
@@ -26,6 +28,7 @@ export default function Search() {
     maxPrice: maxPrice ? Number(maxPrice) : null,
     condition: condition || null,
     sort,
+    onlyWithPhoto,
   })
 
   function updateParam(key, value) {
@@ -45,6 +48,8 @@ export default function Search() {
     setMinPrice(searchParams.get('min') || '')
     setMaxPrice(searchParams.get('max') || '')
   }, [searchParams])
+
+  const hasActiveFilters = query || categorySlug || condition || minPrice || maxPrice
 
   return (
     <div className="container search-page">
@@ -97,13 +102,34 @@ export default function Search() {
         </div>
 
         <div className="filter-group">
+          <label className="filter-checkbox">
+            <input
+              type="checkbox"
+              checked={onlyWithPhoto}
+              onChange={(e) => updateParam('fotos', e.target.checked ? '1' : '')}
+            />
+            Solo con fotos
+          </label>
+        </div>
+
+        <div className="filter-group">
           <label>Ordenar por</label>
           <select value={sort} onChange={(e) => updateParam('orden', e.target.value)}>
             <option value="recent">Más recientes</option>
+            <option value="most_viewed">Más consultados</option>
             <option value="price_asc">Menor precio</option>
             <option value="price_desc">Mayor precio</option>
           </select>
         </div>
+
+        {hasActiveFilters && (
+          <SaveAlertButton
+            query={query}
+            categoryId={activeCategory?.id || null}
+            minPrice={minPrice ? Number(minPrice) : null}
+            maxPrice={maxPrice ? Number(maxPrice) : null}
+          />
+        )}
       </aside>
 
       <main className="search-results">

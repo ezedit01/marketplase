@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
-import { TrashIcon, CheckIcon, EditIcon, UserIcon } from '../components/ui/Icons'
+import { TrashIcon, CheckIcon, EditIcon, UserIcon, HeartIcon, ClockIcon, BellIcon } from '../components/ui/Icons'
 import './Profile.css'
 
 const TABS = [
@@ -73,13 +73,25 @@ export default function Profile() {
             <EditIcon size={15} />
             Editar perfil
           </Link>
-          <Link to="/perfil/favoritos" className="btn btn-outline">
-            Mis favoritos
-          </Link>
           <button className="btn btn-outline" onClick={signOut}>
             Cerrar sesión
           </button>
         </div>
+      </div>
+
+      <div className="profile-quicklinks">
+        <Link to="/perfil/favoritos" className="profile-quicklink">
+          <HeartIcon size={19} />
+          Favoritos
+        </Link>
+        <Link to="/perfil/historial" className="profile-quicklink">
+          <ClockIcon size={19} />
+          Historial
+        </Link>
+        <Link to="/perfil/alertas" className="profile-quicklink">
+          <BellIcon size={19} />
+          Alertas
+        </Link>
       </div>
 
       <h2>Mis publicaciones</h2>
