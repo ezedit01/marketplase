@@ -125,9 +125,58 @@ async function buildOgResponse(request, slug, env) {
   return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } })
 }
 
+async function buildSitemap(request, env) {
+  const supabaseUrl = env.SUPABASE_URL
+  const supabaseAnonKey = env.SUPABASE_ANON_KEY
+  const origin = new URL(request.url).origin
+
+  const staticUrls = [`${origin}/`, `${origin}/buscar`]
+
+  let listingUrls = []
+  if (supabaseUrl && supabaseAnonKey) {
+    try {
+      const query = new URLSearchParams({
+        status: 'eq.active',
+        select: 'slug,updated_at',
+        order: 'created_at.desc',
+        limit: '2000',
+      })
+      const res = await fetch(`${supabaseUrl}/rest/v1/listings?${query}`, {
+        headers: { apikey: supabaseAnonKey, Authorization: `Bearer ${supabaseAnonKey}` },
+      })
+      const rows = await res.json()
+      if (Array.isArray(rows)) {
+        listingUrls = rows.map((l) => ({
+          loc: `${origin}/producto/${l.slug}`,
+          lastmod: l.updated_at ? l.updated_at.slice(0, 10) : undefined,
+        }))
+      }
+    } catch {
+      // si Supabase falla, servimos igual el sitemap con las páginas estáticas
+    }
+  }
+
+  const staticEntries = staticUrls.map((loc) => `  <url><loc>${loc}</loc></url>`).join('\n')
+  const listingEntries = listingUrls
+    .map((l) => `  <url><loc>${l.loc}</loc>${l.lastmod ? `<lastmod>${l.lastmod}</lastmod>` : ''}</url>`)
+    .join('\n')
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${staticEntries}
+${listingEntries}
+</urlset>`
+
+  return new Response(xml, { headers: { 'content-type': 'application/xml; charset=utf-8' } })
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
+
+    if (url.pathname === '/sitemap.xml') {
+      return buildSitemap(request, env)
+    }
 
     if (url.pathname.startsWith('/producto/')) {
       const userAgent = request.headers.get('user-agent') || ''

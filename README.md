@@ -105,6 +105,12 @@ Una vez deployado (en cualquiera de los dos), probá una URL de producto en el [
 
 Cuando tengan el SVG definitivo: reemplazá `public/brand/logo-192.png` (o agregá un `logo.svg` nuevo) y actualizá la constante `LOGO_ICON_SRC` en `src/components/layout/Logo.jsx`. El texto "PUNTO" / "by KREA" se renderiza en vivo con CSS (no es parte de la imagen), así que no hay que tocar nada más para que se siga viendo nítido.
 
+## Rendimiento y SEO
+
+- Las páginas (excepto Home y Buscar, que se cargan al toque) usan `React.lazy` — cada una es su propio archivo chico que el navegador descarga solo cuando el usuario entra ahí. Si agregás una página nueva, seguí el mismo patrón en `App.jsx`.
+- `/sitemap.xml` se genera en el momento (lo arma `worker/index.js` consultando Supabase), no es un archivo estático — así que siempre refleja las publicaciones activas actuales, sin tener que regenerarlo a mano.
+- `public/robots.txt` apunta a ese sitemap. **Si cambiás de dominio** (por ejemplo cuando conectes un dominio propio en vez de `.workers.dev`), actualizá la URL del sitemap ahí.
+
 ## Estructura del proyecto
 
 ```
