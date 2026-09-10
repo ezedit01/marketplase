@@ -5,6 +5,7 @@ import Footer from './components/layout/Footer'
 import Home from './pages/Home'
 import Search from './pages/Search'
 import ListingDetail from './pages/ListingDetail'
+import SellerProfile from './pages/SellerProfile'
 import CreateListing from './pages/CreateListing'
 import Auth from './pages/Auth'
 import Profile from './pages/Profile'
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/buscar" element={<Search />} />
         <Route path="/producto/:slug" element={<ListingDetail />} />
+        <Route path="/vendedor/:id" element={<SellerProfile />} />
         <Route path="/publicar" element={<CreateListing />} />
         <Route path="/ingresar" element={<Auth mode="login" />} />
         <Route path="/registro" element={<Auth mode="register" />} />

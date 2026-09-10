@@ -19,6 +19,13 @@ que se vuelve inmanejable.
 
 ### Etapa 3 — Negocios
 
+`SellerProfile.jsx` (`/vendedor/:id`, agregado en esta etapa) ya establece el
+patrón de "página pública con avatar + datos + grid de publicaciones activas
+de ese usuario". La futura página de negocio (`/negocio/:id`) va a reutilizar
+esencialmente el mismo layout, cambiando la fuente de datos de `profiles` a
+`businesses`.
+
+
 Nueva tabla `businesses` (nombre, logo, dirección, horarios, whatsapp,
 descripción), con `owner_id` referenciando `profiles(id)`. Un negocio puede
 tener publicaciones propias (`listings.business_id`, columna nueva nullable —

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { buildWhatsappContactLink, shareListing } from '../utils/whatsapp'
-import { WhatsappIcon, ShareIcon, MapPinIcon, TagIcon, ImageIcon } from '../components/ui/Icons'
+import { WhatsappIcon, ShareIcon, MapPinIcon, TagIcon, ImageIcon, UserIcon } from '../components/ui/Icons'
 import ReportModal from '../components/listing/ReportModal'
 import FavoriteButton from '../components/listing/FavoriteButton'
 import './ListingDetail.css'
@@ -26,7 +26,7 @@ export default function ListingDetail() {
           `
           *,
           listing_images ( id, url, is_main, order_index ),
-          profiles!listings_user_id_fkey ( name, whatsapp, location, created_at )
+          profiles!listings_user_id_fkey ( id, name, avatar_url, whatsapp, location, created_at )
         `
         )
         .eq('slug', slug)
@@ -130,10 +130,19 @@ export default function ListingDetail() {
         {shareStatus && <p className="listing-detail-share-status">{shareStatus}</p>}
 
         {seller && (
-          <div className="listing-detail-seller">
-            <p className="listing-detail-seller-label">Vendedor</p>
-            <p className="listing-detail-seller-name">{seller.name}</p>
-          </div>
+          <Link to={`/vendedor/${listing.user_id}`} className="listing-detail-seller">
+            <div className="listing-detail-seller-avatar">
+              {seller.avatar_url ? (
+                <img src={seller.avatar_url} alt="" />
+              ) : (
+                <UserIcon size={18} className="listing-detail-seller-avatar-placeholder" />
+              )}
+            </div>
+            <div>
+              <p className="listing-detail-seller-label">Vendedor</p>
+              <p className="listing-detail-seller-name">{seller.name}</p>
+            </div>
+          </Link>
         )}
 
         <button className="listing-detail-report-link" onClick={() => setReportOpen(true)}>
