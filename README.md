@@ -56,25 +56,31 @@ Por defecto, todo usuario nuevo se crea con `role = 'user'`. Para acceder a `/ad
 
 ## 6. Deploy
 
-**Recomendado: Cloudflare Pages.** Netlify cambió a un plan gratis medido en
-"créditos" (300/mes, cada deploy a producción gasta 15) que se agota rápido
-mientras estás iterando seguido. Cloudflare Pages tiene ancho de banda
-ilimitado y 500 builds/mes gratis, sin tarjeta — mucho más cómodo para esta
-etapa del proyecto. Dejé el proyecto listo para los dos.
+**Recomendado: Cloudflare Workers (con static assets).** Netlify cambió a un
+plan gratis medido en "créditos" (300/mes, cada deploy a producción gasta 15)
+que se agota rápido mientras estás iterando seguido. Cloudflare tiene ancho
+de banda ilimitado en el plan gratis — mucho más cómodo para esta etapa del
+proyecto. Dejé el proyecto listo para los dos.
 
-### Deploy en Cloudflare Pages
+Ojo con el nombre: Cloudflare venía separando "Pages" (para sitios estáticos)
+de "Workers" (para código de servidor). Ahora los unificó en un solo producto
+— "Workers" a secas, sirviendo tanto los archivos estáticos como el código
+de servidor desde el mismo lugar. Si conectás el repo desde el dashboard y
+ves que arma un `wrangler.jsonc` solo, es este modelo nuevo — es el que ya
+está configurado en este repo (`wrangler.jsonc` en la raíz + `worker/index.js`).
 
-1. Entrá a [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**, y elegí tu repo.
-2. Configuración de build:
-   - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-3. Cloudflare va a detectar solo la carpeta `functions/` (el equivalente a la edge function de Netlify) y el `public/_redirects` para las rutas de la SPA — no hace falta tocar nada más ahí.
-4. Agregá las variables de entorno en **Settings > Environment variables** (marcá tanto Production como Preview):
+### Deploy en Cloudflare
+
+1. Entrá a [dash.cloudflare.com](https://dash.cloudflare.com) → **Compute (Workers)** → **Create** → conectá tu repo de GitHub.
+2. Build command: `npm run build`. Como ya tenés `wrangler.jsonc` en el repo, Cloudflare lo va a usar tal cual en vez de generar uno distinto en cada build — no hace falta configurar nada más ahí.
+3. Agregá las variables de entorno en **Settings > Variables and Secrets** del Worker:
    - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME`, `VITE_APP_BY`, `VITE_APP_TAGLINE` (para el build)
-   - `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores sin el prefijo `VITE_` — los usa `functions/producto/[slug].js` para las previews)
-5. Guardá y hacé **Retry deployment** para que tome las variables.
+   - `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores sin el prefijo `VITE_` — los usa `worker/index.js` para las previews de WhatsApp/Facebook)
+4. Guardá y volvé a disparar el deploy para que tome las variables.
 
 De ahí en adelante, el flujo es idéntico al de Netlify: cada `git push` a `main` dispara un deploy solo.
+
+**No hace falta `_redirects`** — el modo SPA (servir `index.html` para rutas desconocidas como `/producto/algo`) ya está resuelto por `not_found_handling: "single-page-application"` dentro de `wrangler.jsonc`. Si alguna vez ves el error "Infinite loop detected" en un deploy, es señal de que hay un `_redirects` catch-all conviviendo con esa config — hay que sacar el `_redirects`.
 
 ### Deploy en Netlify (alternativa)
 
@@ -89,7 +95,7 @@ Si usás Netlify, cuidado con la cantidad de deploys: cada uno gasta créditos d
 
 ### Verificar que las previews de WhatsApp/Facebook funcionen
 
-Una vez deployado (en cualquiera de los dos), probá una URL de producto en el [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (funciona también para validar cómo la va a leer WhatsApp, que usa el mismo sistema de crawler). Si no aparece la preview esperada, revisá los logs de la function en el dashboard correspondiente (`og-listing` en Netlify, o `producto/[slug]` en Cloudflare Pages > Functions logs).
+Una vez deployado (en cualquiera de los dos), probá una URL de producto en el [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (funciona también para validar cómo la va a leer WhatsApp, que usa el mismo sistema de crawler). Si no aparece la preview esperada, revisá los logs en el dashboard correspondiente (`og-listing` en Netlify, o el Worker en Cloudflare > Logs).
 
 ## Logo e identidad visual
 
@@ -122,9 +128,9 @@ supabase/
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)
-functions/
-  producto/[slug].js            Previews de Open Graph para Cloudflare Pages (mismo propósito que og-listing.js)
-public/_redirects               Redirects de la SPA (Netlify y Cloudflare Pages usan el mismo formato)
+worker/
+  index.js                      Worker de Cloudflare: sirve la SPA + previews de Open Graph en /producto/*
+wrangler.jsonc                  Config de Cloudflare (Worker + static assets + modo SPA)
 ARCHITECTURE.md                 Cómo la base actual se prepara para negocios/servicios/etc.
 ```
 
