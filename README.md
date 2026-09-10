@@ -10,7 +10,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 - React 19 + Vite
 - Supabase (Auth + Postgres + Storage)
 - React Router
-- CSS puro (sin frameworks)
+- CSS puro (sin frameworks) 
 
 ## 1. Crear el proyecto en Supabase
 
