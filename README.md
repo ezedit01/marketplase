@@ -134,7 +134,6 @@ wrangler.jsonc                  Config de Cloudflare (Worker + static assets + m
 ARCHITECTURE.md                 Cómo la base actual se prepara para negocios/servicios/etc.
 ```
 
-
 ### Sobre las alertas de búsqueda
 
 Guardar una alerta (botón "Guardar esta búsqueda" en `/buscar`) es un simple
