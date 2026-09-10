@@ -73,10 +73,10 @@ está configurado en este repo (`wrangler.jsonc` en la raíz + `worker/index.js`
 
 1. Entrá a [dash.cloudflare.com](https://dash.cloudflare.com) → **Compute (Workers)** → **Create** → conectá tu repo de GitHub.
 2. Build command: `npm run build`. Como ya tenés `wrangler.jsonc` en el repo, Cloudflare lo va a usar tal cual en vez de generar uno distinto en cada build — no hace falta configurar nada más ahí.
-3. Agregá las variables de entorno en **Settings > Variables and Secrets** del Worker:
-   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME`, `VITE_APP_BY`, `VITE_APP_TAGLINE` (para el build)
-   - `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores sin el prefijo `VITE_` — los usa `worker/index.js` para las previews de WhatsApp/Facebook)
-4. Guardá y volvé a disparar el deploy para que tome las variables.
+3. **Cloudflare separa las variables en dos lugares distintos** — importante no mezclarlos:
+   - **Settings > Build > Variables and Secrets**: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME`, `VITE_APP_BY`, `VITE_APP_TAGLINE`. Estas las necesita `npm run build` — si no están acá, el sitio queda en pantalla blanca con un error de "supabaseUrl is required" en la consola.
+   - **Settings > Variables and Secrets** (la general, no la de Build): `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores, sin el prefijo `VITE_`). Estas las usa `worker/index.js` en tiempo real para las previews de WhatsApp/Facebook.
+4. Guardá y disparás un build nuevo (un push, o el botón de retry si lo encontrás) para que tome las variables — cargarlas solas no alcanza, hace falta un build nuevo después.
 
 De ahí en adelante, el flujo es idéntico al de Netlify: cada `git push` a `main` dispara un deploy solo.
 
