@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { buildWhatsappContactLink, shareListing } from '../utils/whatsapp'
-import { WhatsappIcon, ShareIcon, MapPinIcon, TagIcon, ImageIcon, UserIcon } from '../components/ui/Icons'
+import { WhatsappIcon, ShareIcon, MapPinIcon, TagIcon, ImageIcon, UserIcon, ZoomIcon } from '../components/ui/Icons'
 import ReportModal from '../components/listing/ReportModal'
 import FavoriteButton from '../components/listing/FavoriteButton'
+import ImageLightbox from '../components/listing/ImageLightbox'
 import { recordListingView } from '../utils/viewHistory'
 import './ListingDetail.css'
 
@@ -15,6 +16,7 @@ export default function ListingDetail() {
   const [activeImage, setActiveImage] = useState(0)
   const [reportOpen, setReportOpen] = useState(false)
   const [shareStatus, setShareStatus] = useState('')
+  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -69,7 +71,12 @@ export default function ListingDetail() {
       <div className="listing-detail-gallery">
         <div className="listing-detail-main-image">
           {images.length > 0 ? (
-            <img src={images[activeImage].url} alt={listing.title} />
+            <button className="listing-detail-main-image-btn" onClick={() => setLightboxOpen(true)}>
+              <img src={images[activeImage].url} alt={listing.title} />
+              <span className="listing-detail-zoom-badge">
+                <ZoomIcon size={15} />
+              </span>
+            </button>
           ) : (
             <div className="listing-detail-placeholder">
               <ImageIcon size={48} />
@@ -153,6 +160,9 @@ export default function ListingDetail() {
       </div>
 
       {reportOpen && <ReportModal listingId={listing.id} onClose={() => setReportOpen(false)} />}
+      {lightboxOpen && (
+        <ImageLightbox images={images} startIndex={activeImage} onClose={() => setLightboxOpen(false)} />
+      )}
     </div>
   )
 }
