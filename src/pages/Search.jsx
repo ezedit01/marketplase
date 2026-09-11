@@ -15,11 +15,16 @@ export default function Search() {
 
   const query = searchParams.get('q') || ''
   const categorySlug = searchParams.get('categoria') || ''
+  const categoryIdParam = searchParams.get('categoria_id')
   const condition = searchParams.get('estado') || ''
   const sort = searchParams.get('orden') || 'recent'
   const onlyWithPhoto = searchParams.get('fotos') === '1'
 
-  const activeCategory = categories.find((c) => c.slug === categorySlug)
+  const activeCategory = categorySlug
+    ? categories.find((c) => c.slug === categorySlug)
+    : categoryIdParam
+      ? categories.find((c) => c.id === Number(categoryIdParam))
+      : null
 
   const { listings, loading } = useListings({
     search: query,

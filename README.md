@@ -25,6 +25,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 3. Ejecutalo (Run). Esto crea las tablas, las políticas de seguridad (RLS) y el bucket de imágenes.
 4. Después corré también `supabase/migrations/002_favorites_and_alerts.sql` en una query nueva. Agrega favoritos y deja preparada (sin usar todavía) la tabla de alertas de búsqueda para una etapa futura.
 5. Por último, `supabase/migrations/003_avatars.sql`. Crea el bucket de storage para fotos de perfil (la columna ya existía, faltaba el bucket).
+6. Y `supabase/migrations/004_notifications.sql`. Crea la tabla de notificaciones (la campanita) y prepara `search_alerts` para que el cron sepa qué ya revisó.
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -75,8 +76,19 @@ está configurado en este repo (`wrangler.jsonc` en la raíz + `worker/index.js`
 2. Build command: `npm run build`. Como ya tenés `wrangler.jsonc` en el repo, Cloudflare lo va a usar tal cual en vez de generar uno distinto en cada build — no hace falta configurar nada más ahí.
 3. **Cloudflare separa las variables en dos lugares distintos** — importante no mezclarlos:
    - **Settings > Build > Variables and Secrets**: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_APP_NAME`, `VITE_APP_BY`, `VITE_APP_TAGLINE`. Estas las necesita `npm run build` — si no están acá, el sitio queda en pantalla blanca con un error de "supabaseUrl is required" en la consola.
-   - **Settings > Variables and Secrets** (la general, no la de Build): `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores, sin el prefijo `VITE_`). Estas las usa `worker/index.js` en tiempo real para las previews de WhatsApp/Facebook.
+   - **Settings > Runtime > Variables and Secrets** (no la de Build): `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_NAME` (mismos valores, sin el prefijo `VITE_`). Estas las usa `worker/index.js` en tiempo real para las previews de WhatsApp/Facebook, el sitemap, y el cron de alertas.
+   - En esa misma sección de Runtime, agregá también `SUPABASE_SERVICE_ROLE_KEY` — **marcala como "Secret"**, no "Variable" (a diferencia de las demás, esta clave bypassea toda la seguridad de la base, así que no debe quedar visible). La sacás de Supabase en **Project Settings > API > service_role key**.
 4. Guardá y disparás un build nuevo (un push, o el botón de retry si lo encontrás) para que tome las variables — cargarlas solas no alcanza, hace falta un build nuevo después.
+
+### El cron de alertas
+
+`wrangler.jsonc` incluye un cron (`triggers.crons`) que corre **cada una
+hora** y revisa las alertas guardadas contra publicaciones nuevas, creando
+notificaciones in-app cuando hay coincidencias — sin mandar ningún email.
+Después del primer deploy con esta config, deberías verlo listado en
+**Settings > Trigger events** del Worker en Cloudflare. Si querés cambiar la
+frecuencia, es la expresión cron en `wrangler.jsonc` (`"0 * * * *"` = en el
+minuto 0 de cada hora).
 
 De ahí en adelante, el flujo es idéntico al de Netlify: cada `git push` a `main` dispara un deploy solo.
 
@@ -121,9 +133,9 @@ src/
     ui/           Icons.jsx (set de íconos SVG)
   pages/
     Home, Search, ListingDetail, SellerProfile, CreateListing, Auth
-    Profile, EditProfile, Favorites, History, Alerts
+    Profile, EditProfile, Favorites, History, Alerts, Notifications
     Admin/        Dashboard, AdminListings, AdminUsers, AdminCategories, AdminReports
-  hooks/          useAuth, useListings, useCategories, useFavorites
+  hooks/          useAuth, useListings, useCategories, useFavorites, useNotifications
   utils/          slug.js, whatsapp.js, viewHistory.js
   lib/            supabaseClient.js
 supabase/
@@ -131,6 +143,7 @@ supabase/
   migrations/
     002_favorites_and_alerts.sql          Favoritos + tabla de alertas
     003_avatars.sql                       Bucket de fotos de perfil
+    004_notifications.sql                 Tabla de notificaciones + checkpoint del cron
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)

@@ -3,20 +3,25 @@
 // functions/ — acá vive toda la lógica de servidor del sitio.
 //
 // Qué hace:
-// 1. Para cualquier ruta que NO sea /producto/*, delega directo a los
-//    archivos estáticos (env.ASSETS.fetch). El modo SPA (index.html para
-//    rutas desconocidas) ya está resuelto por "not_found_handling" en
-//    wrangler.jsonc, así que no hay que reimplementarlo acá.
+// 1. Para cualquier ruta que NO sea /producto/* o /sitemap.xml, delega
+//    directo a los archivos estáticos (env.ASSETS.fetch). El modo SPA
+//    (index.html para rutas desconocidas) ya está resuelto por
+//    "not_found_handling" en wrangler.jsonc.
 // 2. Para /producto/*, si quien pide la página es un bot de redes sociales
 //    (WhatsApp, Facebook, Twitter/X, etc), le devolvemos HTML con las meta
-//    tags Open Graph de esa publicación puntual (para que la preview al
-//    compartir el link muestre foto, título y precio). Para cualquier otro
-//    visitante, pasa de largo a los archivos estáticos como siempre.
+//    tags Open Graph de esa publicación puntual.
+// 3. /sitemap.xml se arma al vuelo consultando las publicaciones activas.
+// 4. Un cron (ver "triggers" en wrangler.jsonc) corre cada una hora,
+//    revisa las alertas de búsqueda guardadas contra publicaciones nuevas,
+//    y crea notificaciones in-app (tabla notifications) para avisarle a
+//    cada usuario dentro de la campanita — sin mandar ningún email/push.
 //
 // Variables de entorno necesarias (Cloudflare dashboard > Settings >
-// Variables and Secrets, en el Worker):
+// Runtime > Variables and Secrets, en el Worker):
 //   SUPABASE_URL
 //   SUPABASE_ANON_KEY
+//   SUPABASE_SERVICE_ROLE_KEY  (marcar como "Secret", no "Variable" — este
+//                               key bypassea RLS, no debe filtrarse nunca)
 //   APP_NAME (opcional)
 
 const BOT_USER_AGENTS = [
@@ -186,6 +191,94 @@ ${debugComment}
   return new Response(xml, { headers: { 'content-type': 'application/xml; charset=utf-8' } })
 }
 
+// ---------------------------------------------------------------------
+// CRON: revisa las alertas guardadas y crea notificaciones in-app
+// ---------------------------------------------------------------------
+
+function describeAlertForNotification(alert, count) {
+  const bits = []
+  if (alert.query) bits.push(`"${alert.query}"`)
+  if (alert.min_price != null) bits.push(`desde $${Number(alert.min_price).toLocaleString('es-AR')}`)
+  if (alert.max_price != null) bits.push(`hasta $${Number(alert.max_price).toLocaleString('es-AR')}`)
+  const suffix = bits.length > 0 ? ` (${bits.join(' · ')})` : ''
+  return `${count} publicación${count !== 1 ? 'es' : ''} nueva${count !== 1 ? 's' : ''}${suffix}`
+}
+
+function buildAlertSearchLink(alert) {
+  const params = new URLSearchParams()
+  if (alert.query) params.set('q', alert.query)
+  if (alert.category_id) params.set('categoria_id', String(alert.category_id))
+  if (alert.min_price != null) params.set('min', String(alert.min_price))
+  if (alert.max_price != null) params.set('max', String(alert.max_price))
+  return `/buscar?${params.toString()}`
+}
+
+async function checkAlertsAndNotify(env) {
+  const supabaseUrl = env.SUPABASE_URL
+  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY
+  if (!supabaseUrl || !serviceRoleKey) {
+    console.error('Faltan SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY para el cron de alertas')
+    return
+  }
+
+  const authHeaders = { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}` }
+
+  const alertsRes = await fetch(`${supabaseUrl}/rest/v1/search_alerts?active=eq.true&select=*`, {
+    headers: authHeaders,
+  })
+  if (!alertsRes.ok) {
+    console.error('No se pudieron leer las alertas:', await alertsRes.text())
+    return
+  }
+  const alerts = await alertsRes.json()
+
+  for (const alert of alerts) {
+    try {
+      const params = new URLSearchParams({
+        status: 'eq.active',
+        select: 'id',
+      })
+      params.append('created_at', `gt.${alert.last_checked_at}`)
+      if (alert.category_id) params.append('category_id', `eq.${alert.category_id}`)
+      if (alert.min_price != null) params.append('price', `gte.${alert.min_price}`)
+      if (alert.max_price != null) params.append('price', `lte.${alert.max_price}`)
+      if (alert.query) {
+        params.append('search_vector', `wfts(spanish).${alert.query}`)
+      }
+
+      const listingsRes = await fetch(`${supabaseUrl}/rest/v1/listings?${params}`, {
+        headers: { ...authHeaders, Prefer: 'count=exact' },
+      })
+      const matches = await listingsRes.json()
+      const count = Array.isArray(matches) ? matches.length : 0
+
+      if (count > 0) {
+        await fetch(`${supabaseUrl}/rest/v1/notifications`, {
+          method: 'POST',
+          headers: { ...authHeaders, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: alert.user_id,
+            type: 'alert_match',
+            title: describeAlertForNotification(alert, count),
+            body: 'Coincide con una alerta que guardaste.',
+            link: buildAlertSearchLink(alert),
+          }),
+        })
+      }
+
+      // Actualizamos el checkpoint siempre (haya matches o no), así la
+      // próxima corrida solo mira publicaciones realmente nuevas.
+      await fetch(`${supabaseUrl}/rest/v1/search_alerts?id=eq.${alert.id}`, {
+        method: 'PATCH',
+        headers: { ...authHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ last_checked_at: new Date().toISOString() }),
+      })
+    } catch (err) {
+      console.error(`Error procesando alerta ${alert.id}:`, err)
+    }
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
@@ -208,5 +301,9 @@ export default {
     }
 
     return env.ASSETS.fetch(request)
+  },
+
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(checkAlertsAndNotify(env))
   },
 }

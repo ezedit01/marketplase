@@ -94,8 +94,8 @@ export default function Alerts() {
       </Link>
       <h1>Alertas guardadas</h1>
       <p className="alerts-explainer">
-        Guardaste estas búsquedas desde la página de resultados. Todavía no te avisamos
-        automáticamente — entrá acá cuando quieras para ver si hay algo nuevo.
+        Guardaste estas búsquedas desde la página de resultados. Cada una hora revisamos si
+        apareció algo nuevo y te avisamos en la campanita (arriba a la derecha).
       </p>
 
       {loading && <p className="home-empty">Cargando...</p>}

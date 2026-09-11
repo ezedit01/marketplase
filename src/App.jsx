@@ -18,6 +18,7 @@ const EditProfile = lazy(() => import('./pages/EditProfile'))
 const Favorites = lazy(() => import('./pages/Favorites'))
 const History = lazy(() => import('./pages/History'))
 const Alerts = lazy(() => import('./pages/Alerts'))
+const Notifications = lazy(() => import('./pages/Notifications'))
 const AdminLayout = lazy(() => import('./pages/Admin/AdminLayout'))
 const Dashboard = lazy(() => import('./pages/Admin/Dashboard'))
 const AdminListings = lazy(() => import('./pages/Admin/AdminListings'))
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="/perfil/favoritos" element={<Favorites />} />
           <Route path="/perfil/historial" element={<History />} />
           <Route path="/perfil/alertas" element={<Alerts />} />
+          <Route path="/notificaciones" element={<Notifications />} />
 
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />

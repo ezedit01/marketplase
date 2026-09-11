@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { SearchIcon, PlusIcon, UserIcon } from '../ui/Icons'
+import { SearchIcon, PlusIcon, UserIcon, BellIcon } from '../ui/Icons'
 import { useAuth } from '../../hooks/useAuth'
+import { useUnreadNotificationsCount } from '../../hooks/useNotifications'
 import Logo from './Logo'
 import './Header.css'
 
@@ -9,6 +10,7 @@ export default function Header() {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
   const { user, profile } = useAuth()
+  const unreadCount = useUnreadNotificationsCount()
 
   function handleSearchSubmit(e) {
     e.preventDefault()
@@ -37,6 +39,15 @@ export default function Header() {
             <PlusIcon size={18} />
             <span>Publicar</span>
           </Link>
+
+          {user && (
+            <Link to="/notificaciones" className="header-bell-btn" aria-label="Notificaciones">
+              <BellIcon size={19} />
+              {unreadCount > 0 && (
+                <span className="header-bell-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
+              )}
+            </Link>
+          )}
 
           <Link to={user ? '/perfil' : '/ingresar'} className="header-account-btn" aria-label="Cuenta">
             {profile?.avatar_url ? (
