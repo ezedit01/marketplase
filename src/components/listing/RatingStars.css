@@ -1,0 +1,27 @@
+.rating-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--color-featured);
+}
+
+.rating-star {
+  display: flex;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  line-height: 0;
+}
+
+.rating-stars.interactive .rating-star {
+  cursor: pointer;
+  padding: 2px;
+}
+
+.rating-stars-count {
+  margin-left: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}

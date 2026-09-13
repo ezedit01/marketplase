@@ -6,6 +6,7 @@ import { WhatsappIcon, ShareIcon, MapPinIcon, TagIcon, ImageIcon, UserIcon, Zoom
 import ReportModal from '../components/listing/ReportModal'
 import FavoriteButton from '../components/listing/FavoriteButton'
 import ImageLightbox from '../components/listing/ImageLightbox'
+import RatingStars from '../components/listing/RatingStars'
 import { recordListingView } from '../utils/viewHistory'
 import './ListingDetail.css'
 
@@ -29,7 +30,7 @@ export default function ListingDetail() {
           `
           *,
           listing_images ( id, url, is_main, order_index ),
-          profiles!listings_user_id_fkey ( id, name, avatar_url, whatsapp, location, created_at )
+          profiles!listings_user_id_fkey ( id, name, avatar_url, whatsapp, location, created_at, rating_avg, rating_count )
         `
         )
         .eq('slug', slug)
@@ -150,6 +151,7 @@ export default function ListingDetail() {
             <div>
               <p className="listing-detail-seller-label">Vendedor</p>
               <p className="listing-detail-seller-name">{seller.name}</p>
+              {seller.rating_count > 0 && <RatingStars value={seller.rating_avg} count={seller.rating_count} size={12} />}
             </div>
           </Link>
         )}

@@ -217,8 +217,9 @@ async function checkAlertsAndNotify(env) {
   const supabaseUrl = env.SUPABASE_URL
   const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY
   if (!supabaseUrl || !serviceRoleKey) {
-    console.error('Faltan SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY para el cron de alertas')
-    return
+    const msg = 'Faltan SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY para el cron de alertas'
+    console.error(msg)
+    return { ok: false, error: msg }
   }
 
   const authHeaders = { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}` }
@@ -227,10 +228,14 @@ async function checkAlertsAndNotify(env) {
     headers: authHeaders,
   })
   if (!alertsRes.ok) {
-    console.error('No se pudieron leer las alertas:', await alertsRes.text())
-    return
+    const msg = `No se pudieron leer las alertas: ${await alertsRes.text()}`
+    console.error(msg)
+    return { ok: false, error: msg }
   }
   const alerts = await alertsRes.json()
+
+  let notificationsCreated = 0
+  const details = []
 
   for (const alert of alerts) {
     try {
@@ -264,7 +269,10 @@ async function checkAlertsAndNotify(env) {
             link: buildAlertSearchLink(alert),
           }),
         })
+        notificationsCreated++
       }
+
+      details.push({ alert_id: alert.id, query: alert.query, matches: count })
 
       // Actualizamos el checkpoint siempre (haya matches o no), así la
       // próxima corrida solo mira publicaciones realmente nuevas.
@@ -275,8 +283,11 @@ async function checkAlertsAndNotify(env) {
       })
     } catch (err) {
       console.error(`Error procesando alerta ${alert.id}:`, err)
+      details.push({ alert_id: alert.id, error: String(err) })
     }
   }
+
+  return { ok: true, alertsChecked: alerts.length, notificationsCreated, details }
 }
 
 export default {
@@ -285,6 +296,20 @@ export default {
 
     if (url.pathname === '/sitemap.xml') {
       return buildSitemap(request, env)
+    }
+
+    // Ruta manual para probar el cron sin esperar a que se dispare solo.
+    // Protegida con una clave para que no la pueda activar cualquiera.
+    // Ejemplo: /api/run-alert-check?secret=TU_CLAVE
+    if (url.pathname === '/api/run-alert-check') {
+      const providedSecret = url.searchParams.get('secret')
+      if (!env.CRON_TEST_SECRET || providedSecret !== env.CRON_TEST_SECRET) {
+        return new Response('No autorizado', { status: 401 })
+      }
+      const result = await checkAlertsAndNotify(env)
+      return new Response(JSON.stringify(result, null, 2), {
+        headers: { 'content-type': 'application/json; charset=utf-8' },
+      })
     }
 
     if (url.pathname.startsWith('/producto/')) {

@@ -10,7 +10,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 - React 19 + Vite
 - Supabase (Auth + Postgres + Storage)
 - React Router
-- CSS puro (sin frameworks) 
+- CSS puro (sin frameworks)
 
 ## 1. Crear el proyecto en Supabase
 
@@ -26,6 +26,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 4. Después corré también `supabase/migrations/002_favorites_and_alerts.sql` en una query nueva. Agrega favoritos y deja preparada (sin usar todavía) la tabla de alertas de búsqueda para una etapa futura.
 5. Por último, `supabase/migrations/003_avatars.sql`. Crea el bucket de storage para fotos de perfil (la columna ya existía, faltaba el bucket).
 6. Y `supabase/migrations/004_notifications.sql`. Crea la tabla de notificaciones (la campanita) y prepara `search_alerts` para que el cron sepa qué ya revisó.
+7. Y `supabase/migrations/005_seller_ratings.sql`. Calificaciones de vendedores (1-5 estrellas + comentario), con promedio cacheado en `profiles`.
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -90,6 +91,20 @@ Después del primer deploy con esta config, deberías verlo listado en
 frecuencia, es la expresión cron en `wrangler.jsonc` (`"0 * * * *"` = en el
 minuto 0 de cada hora).
 
+**Para probarlo sin esperar hasta una hora**: agregá una variable más en
+Runtime (marcala como "Secret"), `CRON_TEST_SECRET`, con cualquier texto que
+inventes (por ejemplo una contraseña larga random). Después, con el sitio ya
+actualizado, entrá desde el navegador a:
+
+```
+https://tu-sitio.workers.dev/api/run-alert-check?secret=LO-QUE-PUSISTE-EN-CRON_TEST_SECRET
+```
+
+Te va a devolver un JSON con cuántas alertas revisó y cuántas notificaciones
+creó — así confirmás que anda sin esperar al reloj. Guardá esa clave en
+algún lado (no la compartas), porque cualquiera que la sepa puede disparar
+el chequeo manualmente.
+
 De ahí en adelante, el flujo es idéntico al de Netlify: cada `git push` a `main` dispara un deploy solo.
 
 **No hace falta `_redirects`** — el modo SPA (servir `index.html` para rutas desconocidas como `/producto/algo`) ya está resuelto por `not_found_handling: "single-page-application"` dentro de `wrangler.jsonc`. Si alguna vez ves el error "Infinite loop detected" en un deploy, es señal de que hay un `_redirects` catch-all conviviendo con esa config — hay que sacar el `_redirects`.
@@ -129,7 +144,7 @@ Cuando tengan el SVG definitivo: reemplazá `public/brand/logo-192.png` (o agreg
 src/
   components/
     layout/       Header, BottomNav, Footer, Logo
-    listing/      ListingCard, CategoryPills, ReportModal, FavoriteButton, SaveAlertButton
+    listing/      ListingCard, CategoryPills, ReportModal, FavoriteButton, SaveAlertButton, RatingStars, RateSellerForm
     ui/           Icons.jsx (set de íconos SVG)
   pages/
     Home, Search, ListingDetail, SellerProfile, CreateListing, Auth
@@ -144,6 +159,7 @@ supabase/
     002_favorites_and_alerts.sql          Favoritos + tabla de alertas
     003_avatars.sql                       Bucket de fotos de perfil
     004_notifications.sql                 Tabla de notificaciones + checkpoint del cron
+    005_seller_ratings.sql                Calificaciones de vendedores
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)
@@ -156,12 +172,24 @@ ARCHITECTURE.md                 Cómo la base actual se prepara para negocios/se
 ### Sobre las alertas de búsqueda
 
 Guardar una alerta (botón "Guardar esta búsqueda" en `/buscar`) es un simple
-insert en `search_alerts`. **No hay avisos automáticos todavía** — la página
-`/perfil/alertas` calcula, en el momento en que el usuario la visita, cuántas
-publicaciones nuevas matchean cada alerta desde que se guardó. Es un modelo
-"pull" (el usuario entra a revisar), no "push" (no mandamos notificaciones).
-Implementar push/email real requiere un cron job (Supabase tiene `pg_cron`)
-más un canal de entrega — se aborda como una pieza aparte cuando haga falta.
+insert en `search_alerts`. El cron de `worker/index.js` (ver más arriba)
+revisa cada una hora todas las alertas activas contra publicaciones nuevas y
+crea una notificación in-app cuando hay coincidencias — sin mandar ningún
+email. La página `/perfil/alertas` además muestra, al entrar, cuántas
+coincidencias nuevas hay desde la última revisión del cron (un chequeo extra
+"a demanda", complementario al aviso automático de la campanita).
+
+### Sobre las calificaciones de vendedores
+
+Como el contacto real pasa por WhatsApp (fuera de la plataforma), no hay
+forma de verificar que una calificación corresponde a una compra real. Las
+mitigaciones actuales son deliberadamente simples: hace falta estar
+logueado, una calificación por persona por vendedor (se actualiza, no se
+duplica), y nadie puede calificarse a sí mismo — todo reforzado por RLS, no
+solo en el frontend. Si en el futuro aparece abuso real, lo siguiente para
+evaluar sería algún tipo de "contacto verificado" (por ejemplo, solo dejar
+calificar a quien tocó el botón de WhatsApp en esa publicación), pero eso
+requiere trackear esos clicks, que hoy no se registran.
 
 ## Qué quedó afuera del MVP (a propósito)
 
