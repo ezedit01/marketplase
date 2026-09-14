@@ -1,0 +1,113 @@
+.business-detail-loading {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.business-detail {
+  padding: 32px 20px 60px;
+  max-width: 640px;
+}
+
+.business-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.business-detail-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #c4c4c4;
+}
+
+.business-detail-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.business-detail-headinfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.business-detail-headinfo h1 {
+  font-size: 21px;
+  margin: 0 0 4px;
+}
+
+.business-detail-category {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.business-detail-edit {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.business-detail-description {
+  line-height: 1.6;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+}
+
+.business-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding: 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.business-detail-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.business-detail-info-row svg {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.business-detail-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.business-detail-whatsapp-btn {
+  flex: 1;
+  min-width: 220px;
+  background: #25d366;
+}
+
+.business-detail-whatsapp-btn:hover {
+  background: #1fb855;
+}
+
+.business-detail-share-status {
+  font-size: 13px;
+  color: var(--color-accent);
+  margin-top: 8px;
+}

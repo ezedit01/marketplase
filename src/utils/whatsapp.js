@@ -38,3 +38,30 @@ export async function shareListing(listing, url) {
   await navigator.clipboard.writeText(text)
   return 'copied'
 }
+
+// Genera el link para contactar a un negocio por WhatsApp
+export function buildWhatsappBusinessLink(business) {
+  const phone = cleanPhoneNumber(business.whatsapp)
+  const message = `Hola! Vi tu negocio "${business.name}" en ${APP_NAME} y quería hacerte una consulta.`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+}
+
+export function buildBusinessShareText(business, url) {
+  return `${business.name}\n${business.address || ''}\n\nVer en ${APP_NAME}:\n${url}`
+}
+
+export async function shareBusiness(business, url) {
+  const text = buildBusinessShareText(business, url)
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: business.name, text, url })
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  await navigator.clipboard.writeText(text)
+  return 'copied'
+}

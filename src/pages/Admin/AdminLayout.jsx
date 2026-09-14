@@ -5,6 +5,8 @@ import './Admin.css'
 const LINKS = [
   { to: '/admin', label: 'Resumen', end: true },
   { to: '/admin/publicaciones', label: 'Publicaciones' },
+  { to: '/admin/negocios', label: 'Negocios' },
+  { to: '/admin/categorias-negocios', label: 'Categ. negocios' },
   { to: '/admin/usuarios', label: 'Usuarios' },
   { to: '/admin/categorias', label: 'Categorías' },
   { to: '/admin/reportes', label: 'Reportes' },

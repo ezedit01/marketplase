@@ -17,21 +17,25 @@ que se vuelve inmanejable.
 
 ## Cómo se conecta cada etapa futura con lo que ya existe
 
-### Etapa 3 — Negocios
+### Etapa 3 — Negocios ✅ implementada
 
-`SellerProfile.jsx` (`/vendedor/:id`, agregado en esta etapa) ya establece el
-patrón de "página pública con avatar + datos + grid de publicaciones activas
-de ese usuario". La futura página de negocio (`/negocio/:id`) va a reutilizar
-esencialmente el mismo layout, cambiando la fuente de datos de `profiles` a
-`businesses`.
+`businesses` es una tabla separada de `listings`, tal como estaba planeado —
+no comparten filas, cada una tiene su propio ciclo de vida y su propia
+taxonomía de categorías (`business_categories`, distinta de `categories` que
+usan los productos). `SellerProfile.jsx` (perfil de vendedor particular) y
+`BusinessDetail.jsx` (perfil de negocio) terminaron siendo páginas
+independientes en vez de compartir código — en la práctica el contenido
+difiere lo suficiente (horarios, dirección, WhatsApp de negocio vs. grid de
+publicaciones de un particular) como para que forzar un componente común no
+valiera la pena. `BusinessForm.jsx` sí se reutiliza entre crear y editar.
 
-
-Nueva tabla `businesses` (nombre, logo, dirección, horarios, whatsapp,
-descripción), con `owner_id` referenciando `profiles(id)`. Un negocio puede
-tener publicaciones propias (`listings.business_id`, columna nueva nullable —
-no rompe nada porque hoy no existe y su ausencia significa "publicación de
-particular"). El campo del punto 11 (`profiles.account_type`: `'particular'` |
-`'negocio'`) se agrega cuando se construya esto, no antes.
+**Lo que quedó afuera a propósito, para una iteración futura si hace
+falta:** vincular publicaciones del marketplace a un negocio
+(`listings.business_id`), catálogo de productos propio del negocio, y el
+campo `profiles.account_type` (`'particular'` | `'negocio'`) — hoy cualquier
+usuario logueado puede crear un negocio sin que cambie su perfil de
+comprador/vendedor particular. Se agregan cuando haya una razón concreta de
+un usuario real, no antes.
 
 ### Etapa 4 — Servicios
 

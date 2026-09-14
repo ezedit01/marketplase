@@ -52,6 +52,20 @@
   flex-shrink: 0;
 }
 
+.header-businesses-link {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 8px 4px;
+}
+
+.header-businesses-link:hover {
+  color: var(--color-text);
+}
+
 .header-publish-btn {
   padding: 10px 16px;
 }
@@ -111,5 +125,11 @@
 @media (min-width: 640px) {
   .header-publish-btn span {
     display: inline;
+  }
+}
+
+@media (min-width: 760px) {
+  .header-businesses-link {
+    display: flex;
   }
 }

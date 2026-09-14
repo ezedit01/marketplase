@@ -19,12 +19,18 @@ const Favorites = lazy(() => import('./pages/Favorites'))
 const History = lazy(() => import('./pages/History'))
 const Alerts = lazy(() => import('./pages/Alerts'))
 const Notifications = lazy(() => import('./pages/Notifications'))
+const Businesses = lazy(() => import('./pages/Businesses'))
+const BusinessDetail = lazy(() => import('./pages/BusinessDetail'))
+const CreateBusiness = lazy(() => import('./pages/CreateBusiness'))
+const EditBusiness = lazy(() => import('./pages/EditBusiness'))
 const AdminLayout = lazy(() => import('./pages/Admin/AdminLayout'))
 const Dashboard = lazy(() => import('./pages/Admin/Dashboard'))
 const AdminListings = lazy(() => import('./pages/Admin/AdminListings'))
 const AdminUsers = lazy(() => import('./pages/Admin/AdminUsers'))
 const AdminCategories = lazy(() => import('./pages/Admin/AdminCategories'))
 const AdminReports = lazy(() => import('./pages/Admin/AdminReports'))
+const AdminBusinesses = lazy(() => import('./pages/Admin/AdminBusinesses'))
+const AdminBusinessCategories = lazy(() => import('./pages/Admin/AdminBusinessCategories'))
 
 export default function App() {
   return (
@@ -37,6 +43,10 @@ export default function App() {
           <Route path="/producto/:slug" element={<ListingDetail />} />
           <Route path="/vendedor/:id" element={<SellerProfile />} />
           <Route path="/publicar" element={<CreateListing />} />
+          <Route path="/negocios" element={<Businesses />} />
+          <Route path="/negocios/publicar" element={<CreateBusiness />} />
+          <Route path="/negocios/:slug/editar" element={<EditBusiness />} />
+          <Route path="/negocio/:slug" element={<BusinessDetail />} />
           <Route path="/ingresar" element={<Auth mode="login" />} />
           <Route path="/registro" element={<Auth mode="register" />} />
           <Route path="/perfil" element={<Profile />} />
@@ -49,6 +59,8 @@ export default function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="publicaciones" element={<AdminListings />} />
+            <Route path="negocios" element={<AdminBusinesses />} />
+            <Route path="categorias-negocios" element={<AdminBusinessCategories />} />
             <Route path="usuarios" element={<AdminUsers />} />
             <Route path="categorias" element={<AdminCategories />} />
             <Route path="reportes" element={<AdminReports />} />

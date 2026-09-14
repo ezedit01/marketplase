@@ -51,3 +51,38 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.home-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.home-section-header h2 {
+  margin: 0;
+}
+
+.home-section-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.home-businesses-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .home-businesses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .home-businesses-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

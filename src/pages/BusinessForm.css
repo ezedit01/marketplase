@@ -1,0 +1,64 @@
+.business-form-page {
+  padding: 32px 20px 60px;
+  max-width: 560px;
+}
+
+.business-form-page h1 {
+  font-size: 22px;
+  margin: 0 0 24px;
+}
+
+.business-logo-upload {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.business-logo-upload-preview {
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #c4c4c4;
+}
+
+.business-logo-upload-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.business-form .form-field {
+  margin-bottom: 16px;
+}
+
+.business-form .form-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.business-form .form-field input,
+.business-form .form-field select,
+.business-form .form-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  background: var(--color-surface);
+}
+
+.business-form-error {
+  color: var(--color-danger);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
