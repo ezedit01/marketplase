@@ -12,6 +12,7 @@ import Search from './pages/Search'
 const ListingDetail = lazy(() => import('./pages/ListingDetail'))
 const SellerProfile = lazy(() => import('./pages/SellerProfile'))
 const CreateListing = lazy(() => import('./pages/CreateListing'))
+const CreatePicker = lazy(() => import('./pages/CreatePicker'))
 const Auth = lazy(() => import('./pages/Auth'))
 const Profile = lazy(() => import('./pages/Profile'))
 const EditProfile = lazy(() => import('./pages/EditProfile'))
@@ -48,7 +49,8 @@ export default function App() {
           <Route path="/buscar" element={<Search />} />
           <Route path="/producto/:slug" element={<ListingDetail />} />
           <Route path="/vendedor/:id" element={<SellerProfile />} />
-          <Route path="/publicar" element={<CreateListing />} />
+          <Route path="/publicar" element={<CreatePicker />} />
+          <Route path="/publicar/producto" element={<CreateListing />} />
           <Route path="/negocios" element={<Businesses />} />
           <Route path="/negocios/publicar" element={<CreateBusiness />} />
           <Route path="/negocios/:slug/editar" element={<EditBusiness />} />

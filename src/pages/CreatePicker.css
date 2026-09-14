@@ -1,0 +1,60 @@
+.create-picker-page {
+  padding: 32px 20px 60px;
+  max-width: 520px;
+}
+
+.create-picker-page h1 {
+  font-size: 20px;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.create-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.create-picker-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 24px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.create-picker-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.create-picker-card:first-child {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  text-align: left;
+  justify-content: flex-start;
+  padding: 20px;
+}
+
+.create-picker-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.create-picker-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.create-picker-subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0;
+}

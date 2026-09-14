@@ -33,7 +33,7 @@ export default function CreateListing() {
   }, [profile])
 
   if (!authLoading && !user) {
-    navigate('/ingresar?next=/publicar')
+    navigate('/ingresar?next=/publicar/producto')
     return null
   }
 
