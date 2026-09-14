@@ -167,6 +167,14 @@ export function ChevronRightIcon({ size = 22, className }) {
   )
 }
 
+export function WrenchIcon({ size = 20, className }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L2 19v3h3l7.3-7.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2.5-2.5 2.8-2.8z" />
+    </svg>
+  )
+}
+
 export function StoreIcon({ size = 20, className }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>

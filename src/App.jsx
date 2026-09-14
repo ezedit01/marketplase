@@ -23,6 +23,10 @@ const Businesses = lazy(() => import('./pages/Businesses'))
 const BusinessDetail = lazy(() => import('./pages/BusinessDetail'))
 const CreateBusiness = lazy(() => import('./pages/CreateBusiness'))
 const EditBusiness = lazy(() => import('./pages/EditBusiness'))
+const Services = lazy(() => import('./pages/Services'))
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
+const CreateService = lazy(() => import('./pages/CreateService'))
+const EditService = lazy(() => import('./pages/EditService'))
 const AdminLayout = lazy(() => import('./pages/Admin/AdminLayout'))
 const Dashboard = lazy(() => import('./pages/Admin/Dashboard'))
 const AdminListings = lazy(() => import('./pages/Admin/AdminListings'))
@@ -31,6 +35,8 @@ const AdminCategories = lazy(() => import('./pages/Admin/AdminCategories'))
 const AdminReports = lazy(() => import('./pages/Admin/AdminReports'))
 const AdminBusinesses = lazy(() => import('./pages/Admin/AdminBusinesses'))
 const AdminBusinessCategories = lazy(() => import('./pages/Admin/AdminBusinessCategories'))
+const AdminServices = lazy(() => import('./pages/Admin/AdminServices'))
+const AdminServiceCategories = lazy(() => import('./pages/Admin/AdminServiceCategories'))
 
 export default function App() {
   return (
@@ -47,6 +53,10 @@ export default function App() {
           <Route path="/negocios/publicar" element={<CreateBusiness />} />
           <Route path="/negocios/:slug/editar" element={<EditBusiness />} />
           <Route path="/negocio/:slug" element={<BusinessDetail />} />
+          <Route path="/servicios" element={<Services />} />
+          <Route path="/servicios/publicar" element={<CreateService />} />
+          <Route path="/servicios/:slug/editar" element={<EditService />} />
+          <Route path="/servicio/:slug" element={<ServiceDetail />} />
           <Route path="/ingresar" element={<Auth mode="login" />} />
           <Route path="/registro" element={<Auth mode="register" />} />
           <Route path="/perfil" element={<Profile />} />
@@ -61,6 +71,8 @@ export default function App() {
             <Route path="publicaciones" element={<AdminListings />} />
             <Route path="negocios" element={<AdminBusinesses />} />
             <Route path="categorias-negocios" element={<AdminBusinessCategories />} />
+            <Route path="servicios" element={<AdminServices />} />
+            <Route path="categorias-servicios" element={<AdminServiceCategories />} />
             <Route path="usuarios" element={<AdminUsers />} />
             <Route path="categorias" element={<AdminCategories />} />
             <Route path="reportes" element={<AdminReports />} />

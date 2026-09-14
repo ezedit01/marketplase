@@ -28,6 +28,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 6. Y `supabase/migrations/004_notifications.sql`. Crea la tabla de notificaciones (la campanita) y prepara `search_alerts` para que el cron sepa qué ya revisó.
 7. Y `supabase/migrations/005_seller_ratings.sql`. Calificaciones de vendedores (1-5 estrellas + comentario), con promedio cacheado en `profiles`.
 8. Y `supabase/migrations/006_businesses.sql`. Negocios locales (Etapa 3): tabla de negocios, categorías propias, y el bucket de storage para los logos.
+9. Y `supabase/migrations/007_services.sql`. Servicios locales (Etapa 4): tabla de servicios y categorías propias (sin bucket nuevo — reutiliza la foto de perfil).
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -147,15 +148,17 @@ src/
     layout/       Header, BottomNav, Footer, Logo
     listing/      ListingCard, CategoryPills, ReportModal, FavoriteButton, SaveAlertButton, RatingStars, RateSellerForm
     business/     BusinessCard
+    service/      ServiceCard
     ui/           Icons.jsx (set de íconos SVG)
   pages/
     Home, Search, ListingDetail, SellerProfile, CreateListing, Auth
     Profile, EditProfile, Favorites, History, Alerts, Notifications
     Businesses, BusinessDetail, CreateBusiness, EditBusiness, BusinessForm (compartido)
+    Services, ServiceDetail, CreateService, EditService, ServiceForm (compartido)
     Admin/        Dashboard, AdminListings, AdminUsers, AdminCategories, AdminReports,
-                  AdminBusinesses, AdminBusinessCategories
+                  AdminBusinesses, AdminBusinessCategories, AdminServices, AdminServiceCategories
   hooks/          useAuth, useListings, useCategories, useFavorites, useNotifications,
-                  useBusinesses, useBusinessCategories
+                  useBusinesses, useBusinessCategories, useServices, useServiceCategories
   utils/          slug.js, whatsapp.js, viewHistory.js
   lib/            supabaseClient.js
 supabase/
@@ -166,6 +169,7 @@ supabase/
     004_notifications.sql                 Tabla de notificaciones + checkpoint del cron
     005_seller_ratings.sql                Calificaciones de vendedores
     006_businesses.sql                    Negocios locales: tabla, categorías, bucket de logos
+    007_services.sql                      Servicios locales: tabla y categorías
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)

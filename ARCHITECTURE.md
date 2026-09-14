@@ -37,13 +37,16 @@ usuario logueado puede crear un negocio sin que cambie su perfil de
 comprador/vendedor particular. Se agregan cuando haya una razón concreta de
 un usuario real, no antes.
 
-### Etapa 4 — Servicios
+### Etapa 4 — Servicios ✅ implementada
 
-Nueva tabla `services` (independiente de `listings`, porque un servicio no
-tiene "stock" ni se marca como vendido — se marca disponible/no disponible).
-Reutiliza `categories` con un `type` nuevo (`'producto'` | `'servicio'`) o una
-tabla de categorías separada si conviene más — se decide en el momento, no
-condiciona nada de lo ya construido.
+Tabla `services` independiente, con `service_categories` propia (distinta de
+`categories` de productos y de `business_categories`). Decisión de diseño
+que simplificó bastante el MVP: en vez de pedirle al prestador que suba una
+foto para su servicio, se reutiliza `profiles.avatar_url` — un prestador de
+servicio típicamente ES la persona (no una marca como un negocio), así que
+tiene sentido mostrar su foto de perfil real. Si en el futuro hace falta una
+foto específica del trabajo (ej. fotos de trabajos anteriores), se agrega
+como campo aparte sin romper nada de esto.
 
 ### Etapa 5 — Empleos, eventos, promociones
 

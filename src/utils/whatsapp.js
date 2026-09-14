@@ -65,3 +65,30 @@ export async function shareBusiness(business, url) {
   await navigator.clipboard.writeText(text)
   return 'copied'
 }
+
+// Genera el link para contactar a un prestador de servicio por WhatsApp
+export function buildWhatsappServiceLink(service) {
+  const phone = cleanPhoneNumber(service.whatsapp)
+  const message = `Hola! Vi "${service.title}" en ${APP_NAME} y quería consultarte.`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+}
+
+export function buildServiceShareText(service, url) {
+  return `${service.title}\n${service.location || ''}\n\nVer en ${APP_NAME}:\n${url}`
+}
+
+export async function shareService(service, url) {
+  const text = buildServiceShareText(service, url)
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: service.title, text, url })
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  await navigator.clipboard.writeText(text)
+  return 'copied'
+}

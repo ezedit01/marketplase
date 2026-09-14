@@ -7,6 +7,8 @@ const LINKS = [
   { to: '/admin/publicaciones', label: 'Publicaciones' },
   { to: '/admin/negocios', label: 'Negocios' },
   { to: '/admin/categorias-negocios', label: 'Categ. negocios' },
+  { to: '/admin/servicios', label: 'Servicios' },
+  { to: '/admin/categorias-servicios', label: 'Categ. servicios' },
   { to: '/admin/usuarios', label: 'Usuarios' },
   { to: '/admin/categorias', label: 'Categorías' },
   { to: '/admin/reportes', label: 'Reportes' },
