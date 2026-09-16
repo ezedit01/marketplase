@@ -92,3 +92,30 @@ export async function shareService(service, url) {
   await navigator.clipboard.writeText(text)
   return 'copied'
 }
+
+// Genera el link para postularse a un empleo por WhatsApp
+export function buildWhatsappJobLink(job) {
+  const phone = cleanPhoneNumber(job.whatsapp)
+  const message = `Hola! Vi el aviso "${job.title}" en ${APP_NAME} y quería postularme.`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+}
+
+export function buildJobShareText(job, url) {
+  return `${job.title}\n${job.location || ''}\n\nVer en ${APP_NAME}:\n${url}`
+}
+
+export async function shareJob(job, url) {
+  const text = buildJobShareText(job, url)
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: job.title, text, url })
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  await navigator.clipboard.writeText(text)
+  return 'copied'
+}

@@ -33,14 +33,6 @@
   transform: translateY(-2px);
 }
 
-.create-picker-card:first-child {
-  grid-column: 1 / -1;
-  flex-direction: row;
-  text-align: left;
-  justify-content: flex-start;
-  padding: 20px;
-}
-
 .create-picker-icon {
   color: var(--color-accent);
   flex-shrink: 0;

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { SearchIcon, PlusIcon, UserIcon, BellIcon, StoreIcon, WrenchIcon } from '../ui/Icons'
+import { SearchIcon, PlusIcon, UserIcon, BellIcon, CompassIcon } from '../ui/Icons'
 import { useAuth } from '../../hooks/useAuth'
 import { useUnreadNotificationsCount } from '../../hooks/useNotifications'
 import Logo from './Logo'
@@ -35,14 +35,9 @@ export default function Header() {
         </form>
 
         <div className="header-actions">
-          <Link to="/negocios" className="header-businesses-link">
-            <StoreIcon size={17} />
-            <span>Negocios</span>
-          </Link>
-
-          <Link to="/servicios" className="header-businesses-link">
-            <WrenchIcon size={16} />
-            <span>Servicios</span>
+          <Link to="/explorar" className="header-businesses-link">
+            <CompassIcon size={17} />
+            <span>Explorar</span>
           </Link>
 
           <Link to="/publicar" className="btn btn-primary header-publish-btn">

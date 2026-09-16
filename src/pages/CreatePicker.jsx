@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { TagIcon, StoreIcon, WrenchIcon } from '../components/ui/Icons'
+import { TagIcon, StoreIcon, WrenchIcon, BriefcaseIcon } from '../components/ui/Icons'
 import './CreatePicker.css'
 
 const OPTIONS = [
@@ -20,6 +20,12 @@ const OPTIONS = [
     icon: WrenchIcon,
     title: 'Ofrecer un servicio',
     subtitle: 'Electricista, plomero, etc.',
+  },
+  {
+    to: '/empleos/publicar',
+    icon: BriefcaseIcon,
+    title: 'Buscar empleado',
+    subtitle: 'Publicá una búsqueda laboral',
   },
 ]
 

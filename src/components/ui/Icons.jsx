@@ -167,6 +167,24 @@ export function ChevronRightIcon({ size = 22, className }) {
   )
 }
 
+export function CompassIcon({ size = 20, className }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+    </svg>
+  )
+}
+
+export function BriefcaseIcon({ size = 20, className }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+    </svg>
+  )
+}
+
 export function WrenchIcon({ size = 20, className }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>

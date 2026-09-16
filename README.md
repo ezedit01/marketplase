@@ -29,6 +29,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 7. Y `supabase/migrations/005_seller_ratings.sql`. Calificaciones de vendedores (1-5 estrellas + comentario), con promedio cacheado en `profiles`.
 8. Y `supabase/migrations/006_businesses.sql`. Negocios locales (Etapa 3): tabla de negocios, categorías propias, y el bucket de storage para los logos.
 9. Y `supabase/migrations/007_services.sql`. Servicios locales (Etapa 4): tabla de servicios y categorías propias (sin bucket nuevo — reutiliza la foto de perfil).
+10. Y `supabase/migrations/008_jobs.sql`. Empleos locales (Etapa 5, parte 1): tabla de avisos, categorías por rubro, y el campo de jornada.
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -149,17 +150,23 @@ src/
     listing/      ListingCard, CategoryPills, ReportModal, FavoriteButton, SaveAlertButton, RatingStars, RateSellerForm
     business/     BusinessCard
     service/      ServiceCard
+    job/          JobCard
     ui/           Icons.jsx (set de íconos SVG)
   pages/
-    Home, Search, ListingDetail, SellerProfile, CreateListing, Auth
+    Home, Search, ListingDetail, SellerProfile, Auth
+    CreatePicker (selector de qué publicar), Explore (hub de negocios/servicios/empleos)
     Profile, EditProfile, Favorites, History, Alerts, Notifications
+    CreateListing (en /publicar/producto)
     Businesses, BusinessDetail, CreateBusiness, EditBusiness, BusinessForm (compartido)
     Services, ServiceDetail, CreateService, EditService, ServiceForm (compartido)
+    Jobs, JobDetail, CreateJob, EditJob, JobForm (compartido)
     Admin/        Dashboard, AdminListings, AdminUsers, AdminCategories, AdminReports,
-                  AdminBusinesses, AdminBusinessCategories, AdminServices, AdminServiceCategories
+                  AdminBusinesses, AdminBusinessCategories, AdminServices, AdminServiceCategories,
+                  AdminJobs, AdminJobCategories
   hooks/          useAuth, useListings, useCategories, useFavorites, useNotifications,
-                  useBusinesses, useBusinessCategories, useServices, useServiceCategories
-  utils/          slug.js, whatsapp.js, viewHistory.js
+                  useBusinesses, useBusinessCategories, useServices, useServiceCategories,
+                  useJobs, useJobCategories
+  utils/          slug.js, whatsapp.js, viewHistory.js, jobs.js
   lib/            supabaseClient.js
 supabase/
   schema.sql                              Schema inicial (MVP)
@@ -170,6 +177,7 @@ supabase/
     005_seller_ratings.sql                Calificaciones de vendedores
     006_businesses.sql                    Negocios locales: tabla, categorías, bucket de logos
     007_services.sql                      Servicios locales: tabla y categorías
+    008_jobs.sql                          Empleos locales: tabla, categorías, tipo de jornada
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)

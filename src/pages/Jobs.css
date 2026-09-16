@@ -1,0 +1,17 @@
+.jobs-type-select {
+  margin-bottom: 16px;
+}
+
+.jobs-type-select select {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 13px;
+  background: var(--color-surface);
+}
+
+.jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

@@ -48,11 +48,31 @@ tiene sentido mostrar su foto de perfil real. Si en el futuro hace falta una
 foto específica del trabajo (ej. fotos de trabajos anteriores), se agrega
 como campo aparte sin romper nada de esto.
 
-### Etapa 5 — Empleos, eventos, promociones
+### Etapa 5 — Empleos ✅, eventos y promociones pendientes
 
-Mismo patrón: tablas nuevas (`jobs`, `events`, `promotions`), cada una con su
-propio dueño (`profiles` o `businesses`) y su propio ciclo de vida. Ninguna
-depende de tocar `listings`.
+**Empleos** ya está implementado: tabla `jobs` independiente, con
+`job_categories` propia (rubro/industria) y un campo `employment_type`
+simple (no una tabla aparte, es un set fijo de 4 valores vía check
+constraint — no justificaba una tabla). El estado de un aviso sí se parece
+al de `listings` (`active` / `closed` / `deleted`) porque una búsqueda
+laboral se cierra cuando se cubre el puesto, a diferencia de un negocio o
+servicio que están simplemente "activos" mientras existen.
+
+**Eventos** y **Promociones** quedan pendientes, mismo patrón cuando se
+aborden: tablas nuevas (`events`, `promotions`), cada una con su propio
+dueño (`profiles` o `businesses`) y su propio ciclo de vida. Una promoción
+en particular va a tener sentido que referencie `businesses(id)` (una
+promo pertenece a un negocio), a diferencia de jobs/services que
+pertenecen directamente a un usuario.
+
+### Navegación: un hub en vez de un link por sección
+
+A partir de Negocios + Servicios + Empleos, agregar un link nuevo al header
+y una sección nueva en la Home por cada tipo de contenido dejó de escalar
+(y se sentía amontonado en mobile). Se reemplazó por `/explorar`: un único
+hub con tarjetas a cada sección de comunidad. Cuando se agreguen Eventos y
+Promociones, sumar una tarjeta ahí alcanza — no hace falta tocar Header ni
+Home de nuevo.
 
 ### Favoritos (ya implementado en esta etapa)
 
