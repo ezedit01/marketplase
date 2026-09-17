@@ -16,8 +16,9 @@ export function useBusinesses(filters = {}, { limit = 24 } = {}) {
 
       let query = supabase
         .from('businesses')
-        .select('id, name, slug, logo_url, address, category_id, featured')
+        .select('id, name, slug, logo_url, address, category_id, featured, is_premium')
         .eq('status', 'active')
+        .order('is_premium', { ascending: false })
         .order('featured', { ascending: false })
         .order('name', { ascending: true })
         .limit(limit)

@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
 import { usePromotions } from '../hooks/usePromotions'
 import { buildWhatsappBusinessLink, shareBusiness } from '../utils/whatsapp'
-import { WhatsappIcon, ShareIcon, MapPinIcon, ClockIcon, StoreIcon, EditIcon, PlusIcon } from '../components/ui/Icons'
+import { WhatsappIcon, ShareIcon, MapPinIcon, ClockIcon, StoreIcon, EditIcon, PlusIcon, BadgeCheckIcon } from '../components/ui/Icons'
 import PromotionCard from '../components/promotion/PromotionCard'
 import './BusinessDetail.css'
 
@@ -60,6 +60,12 @@ export default function BusinessDetail() {
 
   return (
     <div className="container business-detail">
+      {business.is_premium && business.cover_image_url && (
+        <div className="business-detail-cover">
+          <img src={business.cover_image_url} alt="" />
+        </div>
+      )}
+
       <div className="business-detail-header">
         <div className="business-detail-logo">
           {business.logo_url ? (
@@ -69,7 +75,10 @@ export default function BusinessDetail() {
           )}
         </div>
         <div className="business-detail-headinfo">
-          <h1>{business.name}</h1>
+          <h1>
+            {business.name}
+            {business.is_premium && <BadgeCheckIcon size={18} className="business-detail-premium-badge" />}
+          </h1>
           {categoryName && <p className="business-detail-category">{categoryName}</p>}
         </div>
         {isOwner && (

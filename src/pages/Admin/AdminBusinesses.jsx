@@ -11,7 +11,7 @@ export default function AdminBusinesses() {
     setLoading(true)
     const { data } = await supabase
       .from('businesses')
-      .select('id, name, slug, status, featured, created_at, profiles!businesses_owner_id_fkey(name)')
+      .select('id, name, slug, status, featured, is_premium, created_at, profiles!businesses_owner_id_fkey(name)')
       .order('created_at', { ascending: false })
       .limit(100)
     setBusinesses(data || [])
@@ -24,6 +24,11 @@ export default function AdminBusinesses() {
 
   async function toggleFeatured(id, current) {
     await supabase.from('businesses').update({ featured: !current }).eq('id', id)
+    fetchBusinesses()
+  }
+
+  async function togglePremium(id, current) {
+    await supabase.from('businesses').update({ is_premium: !current }).eq('id', id)
     fetchBusinesses()
   }
 
@@ -54,12 +59,16 @@ export default function AdminBusinesses() {
                 <td>
                   <Link to={`/negocio/${b.slug}`}>{b.name}</Link>{' '}
                   {b.featured && <span className="admin-badge featured">Destacado</span>}
+                  {b.is_premium && <span className="admin-badge featured">Premium</span>}
                 </td>
                 <td>{b.profiles?.name}</td>
                 <td>{b.status}</td>
                 <td className="admin-table-actions">
                   <button onClick={() => toggleFeatured(b.id, b.featured)}>
                     {b.featured ? 'Quitar destacado' : 'Destacar'}
+                  </button>
+                  <button onClick={() => togglePremium(b.id, b.is_premium)}>
+                    {b.is_premium ? 'Quitar premium' : 'Hacer premium'}
                   </button>
                   <button onClick={() => deleteBusiness(b.id)}>
                     <TrashIcon size={14} />

@@ -58,6 +58,7 @@ const AdminEventCategories = lazy(() => import('./pages/Admin/AdminEventCategori
 const AdminPromotions = lazy(() => import('./pages/Admin/AdminPromotions'))
 const TermsOfService = lazy(() => import('./pages/TermsOfService'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const HowItWorks = lazy(() => import('./pages/HowItWorks'))
 
 export default function App() {
   return (
@@ -102,6 +103,7 @@ export default function App() {
           <Route path="/notificaciones" element={<Notifications />} />
           <Route path="/terminos" element={<TermsOfService />} />
           <Route path="/privacidad" element={<PrivacyPolicy />} />
+          <Route path="/como-funciona" element={<HowItWorks />} />
 
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />

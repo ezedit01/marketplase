@@ -22,6 +22,8 @@ export default function BusinessForm({ existingBusiness }) {
   const [hours, setHours] = useState(existingBusiness?.hours || '')
   const [logoFile, setLogoFile] = useState(null)
   const [logoPreview, setLogoPreview] = useState(existingBusiness?.logo_url || null)
+  const [coverFile, setCoverFile] = useState(null)
+  const [coverPreview, setCoverPreview] = useState(existingBusiness?.cover_image_url || null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -37,6 +39,13 @@ export default function BusinessForm({ existingBusiness }) {
     setLogoPreview(URL.createObjectURL(file))
   }
 
+  function handleCoverChange(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setCoverFile(file)
+    setCoverPreview(URL.createObjectURL(file))
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
@@ -50,6 +59,7 @@ export default function BusinessForm({ existingBusiness }) {
 
     try {
       let logoUrl = existingBusiness?.logo_url || null
+      let coverUrl = existingBusiness?.cover_image_url || null
 
       if (logoFile) {
         const ext = logoFile.name.split('.').pop()
@@ -60,6 +70,15 @@ export default function BusinessForm({ existingBusiness }) {
         logoUrl = publicUrl.publicUrl
       }
 
+      if (coverFile) {
+        const ext = coverFile.name.split('.').pop()
+        const path = `${user.id}/cover-${Date.now()}.${ext}`
+        const { error: uploadError } = await supabase.storage.from('business-logos').upload(path, coverFile)
+        if (uploadError) throw uploadError
+        const { data: publicUrl } = supabase.storage.from('business-logos').getPublicUrl(path)
+        coverUrl = publicUrl.publicUrl
+      }
+
       const payload = {
         name: name.trim(),
         category_id: Number(categoryId),
@@ -68,6 +87,7 @@ export default function BusinessForm({ existingBusiness }) {
         whatsapp: whatsapp.trim(),
         hours: hours.trim(),
         logo_url: logoUrl,
+        ...(existingBusiness?.is_premium ? { cover_image_url: coverUrl } : {}),
       }
 
       if (isEdit) {
@@ -109,6 +129,21 @@ export default function BusinessForm({ existingBusiness }) {
             <input type="file" accept="image/*" hidden onChange={handleLogoChange} />
           </label>
         </div>
+
+        {existingBusiness?.is_premium && (
+          <div className="form-field">
+            <label>Imagen de portada (perfil premium)</label>
+            {coverPreview && (
+              <div className="business-cover-preview">
+                <img src={coverPreview} alt="" />
+              </div>
+            )}
+            <label className="btn btn-outline">
+              {coverPreview ? 'Cambiar portada' : 'Subir portada'}
+              <input type="file" accept="image/*" hidden onChange={handleCoverChange} />
+            </label>
+          </div>
+        )}
 
         <div className="form-field">
           <label>Nombre del negocio *</label>

@@ -188,6 +188,22 @@ export function PercentIcon({ size = 20, className }) {
   )
 }
 
+export function BadgeCheckIcon({ size = 16, className }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} fill="currentColor">
+      <path d="M12 1l2.39 2.42 3.35-.48.68 3.33 3.33.68-.48 3.35L23.6 12l-2.42 2.39.48 3.35-3.33.68-.68 3.33-3.35-.48L12 23.6l-2.39-2.42-3.35.48-.68-3.33-3.33-.68.48-3.35L.4 12l2.42-2.39-.48-3.35 3.33-.68.68-3.33 3.35.48L12 1z" />
+      <path
+        d="M8.5 12.5l2.2 2.2 4.5-4.7"
+        fill="none"
+        stroke="var(--color-surface, #fff)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export function CompassIcon({ size = 20, className }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>

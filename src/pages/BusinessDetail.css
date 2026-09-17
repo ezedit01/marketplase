@@ -41,9 +41,32 @@
   min-width: 0;
 }
 
+.business-detail-cover {
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: var(--color-surface);
+}
+
+.business-detail-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .business-detail-headinfo h1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 21px;
   margin: 0 0 4px;
+}
+
+.business-detail-premium-badge {
+  color: #d4af37;
+  flex-shrink: 0;
 }
 
 .business-detail-category {

@@ -40,6 +40,11 @@
   min-width: 0;
 }
 
+.business-card-premium {
+  border-color: #d4af37;
+  background: linear-gradient(180deg, #fffdf5 0%, var(--color-surface) 40%);
+}
+
 .business-card-name {
   font-size: 14px;
   font-weight: 700;
@@ -47,6 +52,14 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.business-card-premium-badge {
+  color: #d4af37;
+  flex-shrink: 0;
 }
 
 .business-card-category {

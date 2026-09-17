@@ -31,6 +31,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 9. Y `supabase/migrations/007_services.sql`. Servicios locales (Etapa 4): tabla de servicios y categorías propias (sin bucket nuevo — reutiliza la foto de perfil).
 10. Y `supabase/migrations/008_jobs.sql`. Empleos locales (Etapa 5, parte 1): tabla de avisos, categorías por rubro, y el campo de jornada.
 11. Y `supabase/migrations/009_events_and_promotions.sql`. Eventos y promociones (Etapa 5, parte 2): completa el roadmap original.
+12. Y `supabase/migrations/010_premium_businesses.sql`. Perfiles comerciales premium: badge y portada. Por ahora el admin activa `is_premium` a mano — todavía no hay cobro conectado.
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -184,6 +185,7 @@ supabase/
     007_services.sql                      Servicios locales: tabla y categorías
     008_jobs.sql                          Empleos locales: tabla, categorías, tipo de jornada
     009_events_and_promotions.sql         Eventos y promociones (promos ligadas a negocios)
+    010_premium_businesses.sql            Perfiles comerciales premium (badge + portada)
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)
