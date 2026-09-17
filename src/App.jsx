@@ -56,6 +56,8 @@ const AdminJobCategories = lazy(() => import('./pages/Admin/AdminJobCategories')
 const AdminEvents = lazy(() => import('./pages/Admin/AdminEvents'))
 const AdminEventCategories = lazy(() => import('./pages/Admin/AdminEventCategories'))
 const AdminPromotions = lazy(() => import('./pages/Admin/AdminPromotions'))
+const TermsOfService = lazy(() => import('./pages/TermsOfService'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 
 export default function App() {
   return (
@@ -98,6 +100,8 @@ export default function App() {
           <Route path="/perfil/historial" element={<History />} />
           <Route path="/perfil/alertas" element={<Alerts />} />
           <Route path="/notificaciones" element={<Notifications />} />
+          <Route path="/terminos" element={<TermsOfService />} />
+          <Route path="/privacidad" element={<PrivacyPolicy />} />
 
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />

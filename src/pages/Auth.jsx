@@ -83,6 +83,14 @@ export default function Auth({ mode = 'login' }) {
           <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
             {loading ? 'Un momento...' : isRegister ? 'Crear cuenta' : 'Ingresar'}
           </button>
+
+          {isRegister && (
+            <p className="auth-legal">
+              Al crear tu cuenta aceptás los{' '}
+              <Link to="/terminos" target="_blank">Términos y Condiciones</Link> y la{' '}
+              <Link to="/privacidad" target="_blank">Política de Privacidad</Link>.
+            </p>
+          )}
         </form>
 
         <p className="auth-switch">

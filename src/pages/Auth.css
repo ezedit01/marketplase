@@ -44,3 +44,16 @@
   color: var(--color-accent);
   font-weight: 600;
 }
+
+.auth-legal {
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.auth-legal a {
+  color: var(--color-text-muted);
+  text-decoration: underline;
+}
