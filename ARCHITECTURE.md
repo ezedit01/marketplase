@@ -48,31 +48,39 @@ tiene sentido mostrar su foto de perfil real. Si en el futuro hace falta una
 foto específica del trabajo (ej. fotos de trabajos anteriores), se agrega
 como campo aparte sin romper nada de esto.
 
-### Etapa 5 — Empleos ✅, eventos y promociones pendientes
+### Etapa 5 — Empleos, Eventos y Promociones ✅ completa
 
-**Empleos** ya está implementado: tabla `jobs` independiente, con
-`job_categories` propia (rubro/industria) y un campo `employment_type`
-simple (no una tabla aparte, es un set fijo de 4 valores vía check
-constraint — no justificaba una tabla). El estado de un aviso sí se parece
-al de `listings` (`active` / `closed` / `deleted`) porque una búsqueda
-laboral se cierra cuando se cubre el puesto, a diferencia de un negocio o
-servicio que están simplemente "activos" mientras existen.
+**Empleos**: tabla `jobs` independiente, con `job_categories` propia
+(rubro/industria) y un campo `employment_type` simple (no una tabla aparte,
+es un set fijo de 4 valores vía check constraint). El estado de un aviso se
+parece al de `listings` (`active` / `closed` / `deleted`) porque una
+búsqueda laboral se cierra cuando se cubre el puesto.
 
-**Eventos** y **Promociones** quedan pendientes, mismo patrón cuando se
-aborden: tablas nuevas (`events`, `promotions`), cada una con su propio
-dueño (`profiles` o `businesses`) y su propio ciclo de vida. Una promoción
-en particular va a tener sentido que referencie `businesses(id)` (una
-promo pertenece a un negocio), a diferencia de jobs/services que
-pertenecen directamente a un usuario.
+**Eventos**: tabla `events` independiente, con `event_categories` propia.
+A diferencia de listings/jobs, no se "vende" ni se "cubre" — el ciclo de
+vida natural es la fecha: `useEvents` solo trae eventos de hoy en adelante
+(`event_date >= hoy`), ordenados por fecha más próxima. `status` cubre
+`active`/`cancelled`/`deleted` para moderación manual, no reemplaza el
+filtro por fecha.
+
+**Promociones**: única entidad de esta etapa que **sí** referencia otra
+tabla nueva directamente (`promotions.business_id → businesses.id`, not
+null) — a propósito, porque conceptualmente una promo no existe sin un
+negocio que la respalde (a diferencia de un servicio o un empleo, que
+pertenecen a una persona). Esto significa que las promociones no se crean
+desde el selector genérico de "publicar" — se crean desde dentro de la
+página del negocio del dueño (`/negocios/:slug/promociones/nueva`), con la
+ownership verificada vía `businesses.owner_id`, no vía un campo propio en
+`promotions`.
 
 ### Navegación: un hub en vez de un link por sección
 
 A partir de Negocios + Servicios + Empleos, agregar un link nuevo al header
 y una sección nueva en la Home por cada tipo de contenido dejó de escalar
 (y se sentía amontonado en mobile). Se reemplazó por `/explorar`: un único
-hub con tarjetas a cada sección de comunidad. Cuando se agreguen Eventos y
-Promociones, sumar una tarjeta ahí alcanza — no hace falta tocar Header ni
-Home de nuevo.
+hub con tarjetas a cada sección de comunidad (ahora con las 5: Negocios,
+Servicios, Empleos, Eventos, Promociones). Sumar una sección nueva en el
+futuro es agregar una tarjeta ahí — no hace falta tocar Header ni Home.
 
 ### Favoritos (ya implementado en esta etapa)
 

@@ -33,6 +33,14 @@ const Jobs = lazy(() => import('./pages/Jobs'))
 const JobDetail = lazy(() => import('./pages/JobDetail'))
 const CreateJob = lazy(() => import('./pages/CreateJob'))
 const EditJob = lazy(() => import('./pages/EditJob'))
+const Events = lazy(() => import('./pages/Events'))
+const EventDetail = lazy(() => import('./pages/EventDetail'))
+const CreateEvent = lazy(() => import('./pages/CreateEvent'))
+const EditEvent = lazy(() => import('./pages/EditEvent'))
+const Promotions = lazy(() => import('./pages/Promotions'))
+const PromotionDetail = lazy(() => import('./pages/PromotionDetail'))
+const CreatePromotion = lazy(() => import('./pages/CreatePromotion'))
+const EditPromotion = lazy(() => import('./pages/EditPromotion'))
 const AdminLayout = lazy(() => import('./pages/Admin/AdminLayout'))
 const Dashboard = lazy(() => import('./pages/Admin/Dashboard'))
 const AdminListings = lazy(() => import('./pages/Admin/AdminListings'))
@@ -45,6 +53,9 @@ const AdminServices = lazy(() => import('./pages/Admin/AdminServices'))
 const AdminServiceCategories = lazy(() => import('./pages/Admin/AdminServiceCategories'))
 const AdminJobs = lazy(() => import('./pages/Admin/AdminJobs'))
 const AdminJobCategories = lazy(() => import('./pages/Admin/AdminJobCategories'))
+const AdminEvents = lazy(() => import('./pages/Admin/AdminEvents'))
+const AdminEventCategories = lazy(() => import('./pages/Admin/AdminEventCategories'))
+const AdminPromotions = lazy(() => import('./pages/Admin/AdminPromotions'))
 
 export default function App() {
   return (
@@ -57,11 +68,12 @@ export default function App() {
           <Route path="/producto/:slug" element={<ListingDetail />} />
           <Route path="/vendedor/:id" element={<SellerProfile />} />
           <Route path="/publicar" element={<CreatePicker />} />
-          <Route path="/explorar" element={<Explore />} />
           <Route path="/publicar/producto" element={<CreateListing />} />
+          <Route path="/explorar" element={<Explore />} />
           <Route path="/negocios" element={<Businesses />} />
           <Route path="/negocios/publicar" element={<CreateBusiness />} />
           <Route path="/negocios/:slug/editar" element={<EditBusiness />} />
+          <Route path="/negocios/:businessSlug/promociones/nueva" element={<CreatePromotion />} />
           <Route path="/negocio/:slug" element={<BusinessDetail />} />
           <Route path="/servicios" element={<Services />} />
           <Route path="/servicios/publicar" element={<CreateService />} />
@@ -71,6 +83,13 @@ export default function App() {
           <Route path="/empleos/publicar" element={<CreateJob />} />
           <Route path="/empleos/:slug/editar" element={<EditJob />} />
           <Route path="/empleo/:slug" element={<JobDetail />} />
+          <Route path="/eventos" element={<Events />} />
+          <Route path="/eventos/publicar" element={<CreateEvent />} />
+          <Route path="/eventos/:slug/editar" element={<EditEvent />} />
+          <Route path="/evento/:slug" element={<EventDetail />} />
+          <Route path="/promociones" element={<Promotions />} />
+          <Route path="/promociones/:slug/editar" element={<EditPromotion />} />
+          <Route path="/promocion/:slug" element={<PromotionDetail />} />
           <Route path="/ingresar" element={<Auth mode="login" />} />
           <Route path="/registro" element={<Auth mode="register" />} />
           <Route path="/perfil" element={<Profile />} />
@@ -89,6 +108,9 @@ export default function App() {
             <Route path="categorias-servicios" element={<AdminServiceCategories />} />
             <Route path="empleos" element={<AdminJobs />} />
             <Route path="categorias-empleos" element={<AdminJobCategories />} />
+            <Route path="eventos" element={<AdminEvents />} />
+            <Route path="categorias-eventos" element={<AdminEventCategories />} />
+            <Route path="promociones" element={<AdminPromotions />} />
             <Route path="usuarios" element={<AdminUsers />} />
             <Route path="categorias" element={<AdminCategories />} />
             <Route path="reportes" element={<AdminReports />} />

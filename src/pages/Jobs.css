@@ -15,3 +15,10 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.promotions-hint {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-align: center;
+}

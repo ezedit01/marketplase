@@ -30,6 +30,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 8. Y `supabase/migrations/006_businesses.sql`. Negocios locales (Etapa 3): tabla de negocios, categorías propias, y el bucket de storage para los logos.
 9. Y `supabase/migrations/007_services.sql`. Servicios locales (Etapa 4): tabla de servicios y categorías propias (sin bucket nuevo — reutiliza la foto de perfil).
 10. Y `supabase/migrations/008_jobs.sql`. Empleos locales (Etapa 5, parte 1): tabla de avisos, categorías por rubro, y el campo de jornada.
+11. Y `supabase/migrations/009_events_and_promotions.sql`. Eventos y promociones (Etapa 5, parte 2): completa el roadmap original.
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -151,22 +152,26 @@ src/
     business/     BusinessCard
     service/      ServiceCard
     job/          JobCard
+    event/        EventCard
+    promotion/    PromotionCard
     ui/           Icons.jsx (set de íconos SVG)
   pages/
     Home, Search, ListingDetail, SellerProfile, Auth
-    CreatePicker (selector de qué publicar), Explore (hub de negocios/servicios/empleos)
+    CreatePicker (selector de qué publicar), Explore (hub de negocios/servicios/empleos/eventos/promos)
     Profile, EditProfile, Favorites, History, Alerts, Notifications
     CreateListing (en /publicar/producto)
     Businesses, BusinessDetail, CreateBusiness, EditBusiness, BusinessForm (compartido)
     Services, ServiceDetail, CreateService, EditService, ServiceForm (compartido)
     Jobs, JobDetail, CreateJob, EditJob, JobForm (compartido)
+    Events, EventDetail, CreateEvent, EditEvent, EventForm (compartido)
+    Promotions, PromotionDetail, CreatePromotion, EditPromotion, PromotionForm (compartido)
     Admin/        Dashboard, AdminListings, AdminUsers, AdminCategories, AdminReports,
                   AdminBusinesses, AdminBusinessCategories, AdminServices, AdminServiceCategories,
-                  AdminJobs, AdminJobCategories
+                  AdminJobs, AdminJobCategories, AdminEvents, AdminEventCategories, AdminPromotions
   hooks/          useAuth, useListings, useCategories, useFavorites, useNotifications,
                   useBusinesses, useBusinessCategories, useServices, useServiceCategories,
-                  useJobs, useJobCategories
-  utils/          slug.js, whatsapp.js, viewHistory.js, jobs.js
+                  useJobs, useJobCategories, useEvents, useEventCategories, usePromotions
+  utils/          slug.js, whatsapp.js, viewHistory.js, jobs.js, dates.js
   lib/            supabaseClient.js
 supabase/
   schema.sql                              Schema inicial (MVP)
@@ -178,6 +183,7 @@ supabase/
     006_businesses.sql                    Negocios locales: tabla, categorías, bucket de logos
     007_services.sql                      Servicios locales: tabla y categorías
     008_jobs.sql                          Empleos locales: tabla, categorías, tipo de jornada
+    009_events_and_promotions.sql         Eventos y promociones (promos ligadas a negocios)
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)

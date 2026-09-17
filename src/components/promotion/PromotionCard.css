@@ -1,0 +1,72 @@
+.promotion-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.promotion-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.promotion-card-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #c4c4c4;
+}
+
+.promotion-card-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promotion-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.promotion-card-business {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0 0 2px;
+}
+
+.promotion-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 3px;
+}
+
+.promotion-card-expiry {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.promotion-card-discount {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 999px;
+}

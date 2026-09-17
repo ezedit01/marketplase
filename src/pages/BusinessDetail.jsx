@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
+import { usePromotions } from '../hooks/usePromotions'
 import { buildWhatsappBusinessLink, shareBusiness } from '../utils/whatsapp'
-import { WhatsappIcon, ShareIcon, MapPinIcon, ClockIcon, StoreIcon, EditIcon } from '../components/ui/Icons'
+import { WhatsappIcon, ShareIcon, MapPinIcon, ClockIcon, StoreIcon, EditIcon, PlusIcon } from '../components/ui/Icons'
+import PromotionCard from '../components/promotion/PromotionCard'
 import './BusinessDetail.css'
 
 export default function BusinessDetail() {
@@ -38,6 +40,9 @@ export default function BusinessDetail() {
       cancelled = true
     }
   }, [slug])
+
+  const { promotions } = usePromotions({ businessId: business?.id }, { limit: 10 })
+  const visiblePromotions = promotions.filter((p) => p.status === 'active')
 
   if (loading) return <div className="container business-detail-loading">Cargando...</div>
   if (!business) return <div className="container business-detail-loading">Negocio no encontrado.</div>
@@ -111,6 +116,28 @@ export default function BusinessDetail() {
       </div>
 
       {shareStatus && <p className="business-detail-share-status">{shareStatus}</p>}
+
+      <div className="business-detail-promotions">
+        <div className="business-detail-promotions-header">
+          <h2>Promociones</h2>
+          {isOwner && (
+            <Link to={`/negocios/${business.slug}/promociones/nueva`} className="btn btn-outline business-detail-add-promo">
+              <PlusIcon size={14} />
+              Agregar
+            </Link>
+          )}
+        </div>
+
+        {visiblePromotions.length === 0 ? (
+          <p className="business-detail-no-promos">Sin promociones activas por ahora.</p>
+        ) : (
+          <div className="business-detail-promotions-list">
+            {visiblePromotions.map((p) => (
+              <PromotionCard key={p.id} promotion={{ ...p, businesses: business }} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

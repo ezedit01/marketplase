@@ -119,3 +119,30 @@ export async function shareJob(job, url) {
   await navigator.clipboard.writeText(text)
   return 'copied'
 }
+
+// Genera el link para consultar sobre un evento por WhatsApp
+export function buildWhatsappEventLink(event) {
+  const phone = cleanPhoneNumber(event.whatsapp)
+  const message = `Hola! Vi el evento "${event.title}" en ${APP_NAME} y quería consultar.`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+}
+
+export function buildEventShareText(event, url) {
+  return `${event.title}\n${event.location || ''}\n\nVer en ${APP_NAME}:\n${url}`
+}
+
+export async function shareEvent(event, url) {
+  const text = buildEventShareText(event, url)
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: event.title, text, url })
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  await navigator.clipboard.writeText(text)
+  return 'copied'
+}
