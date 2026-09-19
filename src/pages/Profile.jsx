@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
-import { TrashIcon, CheckIcon, EditIcon, UserIcon, HeartIcon, ClockIcon, BellIcon } from '../components/ui/Icons'
+import { TrashIcon, CheckIcon, EditIcon, UserIcon, HeartIcon, ClockIcon, BellIcon, StoreIcon } from '../components/ui/Icons'
 import './Profile.css'
 
 const TABS = [
@@ -91,6 +91,10 @@ export default function Profile() {
         <Link to="/perfil/alertas" className="profile-quicklink">
           <BellIcon size={19} />
           Alertas
+        </Link>
+        <Link to="/perfil/publicaciones" className="profile-quicklink">
+          <StoreIcon size={19} />
+          Negocios y más
         </Link>
       </div>
 

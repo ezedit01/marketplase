@@ -51,6 +51,7 @@ const EditErrand = lazy(() => import('./pages/EditErrand'))
 const TermsOfService = lazy(() => import('./pages/TermsOfService'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 const HowItWorks = lazy(() => import('./pages/HowItWorks'))
+const MyContent = lazy(() => import('./pages/MyContent'))
 const AdminLayout = lazy(() => import('./pages/Admin/AdminLayout'))
 const Dashboard = lazy(() => import('./pages/Admin/Dashboard'))
 const AdminListings = lazy(() => import('./pages/Admin/AdminListings'))
@@ -117,6 +118,7 @@ export default function App() {
           <Route path="/perfil/favoritos" element={<Favorites />} />
           <Route path="/perfil/historial" element={<History />} />
           <Route path="/perfil/alertas" element={<Alerts />} />
+          <Route path="/perfil/publicaciones" element={<MyContent />} />
           <Route path="/notificaciones" element={<Notifications />} />
           <Route path="/terminos" element={<TermsOfService />} />
           <Route path="/privacidad" element={<PrivacyPolicy />} />
