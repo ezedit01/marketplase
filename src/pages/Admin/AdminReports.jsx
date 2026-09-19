@@ -18,7 +18,7 @@ export default function AdminReports() {
     setLoading(true)
     const { data } = await supabase
       .from('reports')
-      .select('id, reason, details, status, created_at, listings(title, slug)')
+      .select('id, reason, details, status, created_at, listings(title, slug), trips(slug, origin), errands(slug, errand_type)')
       .order('created_at', { ascending: false })
     setReports(data || [])
     setLoading(false)
@@ -31,6 +31,13 @@ export default function AdminReports() {
   async function updateStatus(id, status) {
     await supabase.from('reports').update({ status }).eq('id', id)
     fetchReports()
+  }
+
+  function renderTarget(r) {
+    if (r.listings) return <Link to={`/producto/${r.listings.slug}`}>{r.listings.title}</Link>
+    if (r.trips) return <Link to={`/viaje/${r.trips.slug}`}>Viaje desde {r.trips.origin}</Link>
+    if (r.errands) return <Link to={`/comision/${r.errands.slug}`}>Comisión: {r.errands.errand_type}</Link>
+    return '(eliminado)'
   }
 
   return (
@@ -53,9 +60,7 @@ export default function AdminReports() {
           <tbody>
             {reports.map((r) => (
               <tr key={r.id}>
-                <td>
-                  {r.listings ? <Link to={`/producto/${r.listings.slug}`}>{r.listings.title}</Link> : '(eliminada)'}
-                </td>
+                <td>{renderTarget(r)}</td>
                 <td>{REASON_LABELS[r.reason]}</td>
                 <td>
                   {r.status === 'pending' ? (

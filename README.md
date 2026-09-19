@@ -32,6 +32,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 10. Y `supabase/migrations/008_jobs.sql`. Empleos locales (Etapa 5, parte 1): tabla de avisos, categorías por rubro, y el campo de jornada.
 11. Y `supabase/migrations/009_events_and_promotions.sql`. Eventos y promociones (Etapa 5, parte 2): completa el roadmap original.
 12. Y `supabase/migrations/010_premium_businesses.sql`. Perfiles comerciales premium: badge y portada. Por ahora el admin activa `is_premium` a mano — todavía no hay cobro conectado.
+13. Y `supabase/migrations/011_travel_and_errands.sql`. PUNTO Viajes: viajes compartidos, comisiones/encomiendas, destinos, y extiende `reports` para poder reportar viajes y comisiones (no solo productos).
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -149,30 +150,36 @@ Cuando tengan el SVG definitivo: reemplazá `public/brand/logo-192.png` (o agreg
 src/
   components/
     layout/       Header, BottomNav, Footer, Logo
-    listing/      ListingCard, CategoryPills, ReportModal, FavoriteButton, SaveAlertButton, RatingStars, RateSellerForm
+    listing/      ListingCard, CategoryPills, ReportModal (genérico: listing/trip/errand), FavoriteButton, SaveAlertButton, RatingStars, RateSellerForm
     business/     BusinessCard
     service/      ServiceCard
     job/          JobCard
     event/        EventCard
     promotion/    PromotionCard
+    travel/       TripCard, ErrandCard
     ui/           Icons.jsx (set de íconos SVG)
   pages/
     Home, Search, ListingDetail, SellerProfile, Auth
-    CreatePicker (selector de qué publicar), Explore (hub de negocios/servicios/empleos/eventos/promos)
+    CreatePicker (selector de qué publicar), Explore (hub de negocios/servicios/empleos/eventos/promos/viajes)
     Profile, EditProfile, Favorites, History, Alerts, Notifications
+    TermsOfService, PrivacyPolicy, HowItWorks
     CreateListing (en /publicar/producto)
     Businesses, BusinessDetail, CreateBusiness, EditBusiness, BusinessForm (compartido)
     Services, ServiceDetail, CreateService, EditService, ServiceForm (compartido)
     Jobs, JobDetail, CreateJob, EditJob, JobForm (compartido)
     Events, EventDetail, CreateEvent, EditEvent, EventForm (compartido)
     Promotions, PromotionDetail, CreatePromotion, EditPromotion, PromotionForm (compartido)
+    Travel (hub con pestañas), TripDetail, CreateTrip, EditTrip, TripForm (compartido)
+    ErrandDetail, CreateErrand, EditErrand, ErrandForm (compartido)
     Admin/        Dashboard, AdminListings, AdminUsers, AdminCategories, AdminReports,
                   AdminBusinesses, AdminBusinessCategories, AdminServices, AdminServiceCategories,
-                  AdminJobs, AdminJobCategories, AdminEvents, AdminEventCategories, AdminPromotions
+                  AdminJobs, AdminJobCategories, AdminEvents, AdminEventCategories, AdminPromotions,
+                  AdminTrips, AdminErrands, AdminTravelDestinations
   hooks/          useAuth, useListings, useCategories, useFavorites, useNotifications,
                   useBusinesses, useBusinessCategories, useServices, useServiceCategories,
-                  useJobs, useJobCategories, useEvents, useEventCategories, usePromotions
-  utils/          slug.js, whatsapp.js, viewHistory.js, jobs.js, dates.js
+                  useJobs, useJobCategories, useEvents, useEventCategories, usePromotions,
+                  useTrips, useErrands, useTravelDestinations
+  utils/          slug.js, whatsapp.js, viewHistory.js, jobs.js, dates.js, errands.js
   lib/            supabaseClient.js
 supabase/
   schema.sql                              Schema inicial (MVP)
@@ -186,6 +193,7 @@ supabase/
     008_jobs.sql                          Empleos locales: tabla, categorías, tipo de jornada
     009_events_and_promotions.sql         Eventos y promociones (promos ligadas a negocios)
     010_premium_businesses.sql            Perfiles comerciales premium (badge + portada)
+    011_travel_and_errands.sql            PUNTO Viajes: viajes, comisiones/encomiendas, destinos, extiende reports
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)

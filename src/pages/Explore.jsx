@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { StoreIcon, WrenchIcon, BriefcaseIcon, CalendarIcon, PercentIcon } from '../components/ui/Icons'
+import { StoreIcon, WrenchIcon, BriefcaseIcon, CalendarIcon, PercentIcon, CarIcon } from '../components/ui/Icons'
 import './CreatePicker.css'
 
 const SECTIONS = [
@@ -32,6 +32,12 @@ const SECTIONS = [
     icon: PercentIcon,
     title: 'Promociones',
     subtitle: 'Ofertas y descuentos',
+  },
+  {
+    to: '/viajes',
+    icon: CarIcon,
+    title: 'PUNTO Viajes',
+    subtitle: 'Viajes, comisiones y encomiendas',
   },
 ]
 

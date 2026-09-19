@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { TagIcon, StoreIcon, WrenchIcon, BriefcaseIcon, CalendarIcon } from '../components/ui/Icons'
+import { TagIcon, StoreIcon, WrenchIcon, BriefcaseIcon, CalendarIcon, CarIcon, PackageIcon } from '../components/ui/Icons'
 import './CreatePicker.css'
 
 const OPTIONS = [
@@ -32,6 +32,18 @@ const OPTIONS = [
     icon: CalendarIcon,
     title: 'Publicar un evento',
     subtitle: 'Ferias, fiestas, actividades',
+  },
+  {
+    to: '/viajes/publicar',
+    icon: CarIcon,
+    title: 'Publicar un viaje',
+    subtitle: 'Vas a otra localidad con lugares',
+  },
+  {
+    to: '/comisiones/publicar',
+    icon: PackageIcon,
+    title: 'Comisión o encomienda',
+    subtitle: 'Ofrecer o pedir un encargo',
   },
 ]
 

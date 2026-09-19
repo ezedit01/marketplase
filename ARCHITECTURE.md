@@ -122,6 +122,26 @@ tabla `towns` (o `locations`) y una FK `town_id` en `profiles` y `listings`,
 filtrando todo por localidad del usuario. Es un cambio de una sola columna
 propagada a las tablas existentes — no requiere reestructurar nada.
 
+### PUNTO Viajes + Comisiones/Encomiendas ✅ implementada
+
+Dos tablas más siguiendo el mismo criterio (independientes, no tocan
+`listings`): `trips` (alguien ya va a viajar, ofrece lugares) y `errands`
+(comisiones/encomiendas, con un campo `mode` que distingue `ofrezco` de
+`necesito` — a diferencia de trips, que siempre es "ofrezco" por
+naturaleza). Ambas comparten `travel_destinations`, una tabla de categorías
+más (Santiago del Estero, Ojo de Agua, Sumampa, Córdoba, Otro destino).
+
+**Decisión relevante:** en vez de duplicar el sistema de reportes para esta
+sección, se generalizó la tabla `reports` existente agregándole columnas
+`trip_id` y `errand_id` (nullables, con un check constraint que exige que
+se llene exactamente una de las tres: `listing_id`/`trip_id`/`errand_id`).
+El componente `ReportModal.jsx` pasó de aceptar `listingId` a aceptar
+`targetType` + `targetId`, genérico. Esto deja la puerta abierta para que
+el día que se quiera reportar un negocio, servicio o empleo, sea agregar
+una columna más a `reports` y un caso más en `ReportModal`, no un sistema
+nuevo — hoy no está hecho para negocios/servicios/empleos/eventos, queda
+pendiente para cuando haga falta.
+
 ## Resumen
 
 Ninguna de las expansiones futuras necesita romper o migrar pesadamente lo que

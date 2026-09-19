@@ -41,6 +41,16 @@ const Promotions = lazy(() => import('./pages/Promotions'))
 const PromotionDetail = lazy(() => import('./pages/PromotionDetail'))
 const CreatePromotion = lazy(() => import('./pages/CreatePromotion'))
 const EditPromotion = lazy(() => import('./pages/EditPromotion'))
+const Travel = lazy(() => import('./pages/Travel'))
+const TripDetail = lazy(() => import('./pages/TripDetail'))
+const CreateTrip = lazy(() => import('./pages/CreateTrip'))
+const EditTrip = lazy(() => import('./pages/EditTrip'))
+const ErrandDetail = lazy(() => import('./pages/ErrandDetail'))
+const CreateErrand = lazy(() => import('./pages/CreateErrand'))
+const EditErrand = lazy(() => import('./pages/EditErrand'))
+const TermsOfService = lazy(() => import('./pages/TermsOfService'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const HowItWorks = lazy(() => import('./pages/HowItWorks'))
 const AdminLayout = lazy(() => import('./pages/Admin/AdminLayout'))
 const Dashboard = lazy(() => import('./pages/Admin/Dashboard'))
 const AdminListings = lazy(() => import('./pages/Admin/AdminListings'))
@@ -56,9 +66,9 @@ const AdminJobCategories = lazy(() => import('./pages/Admin/AdminJobCategories')
 const AdminEvents = lazy(() => import('./pages/Admin/AdminEvents'))
 const AdminEventCategories = lazy(() => import('./pages/Admin/AdminEventCategories'))
 const AdminPromotions = lazy(() => import('./pages/Admin/AdminPromotions'))
-const TermsOfService = lazy(() => import('./pages/TermsOfService'))
-const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
-const HowItWorks = lazy(() => import('./pages/HowItWorks'))
+const AdminTrips = lazy(() => import('./pages/Admin/AdminTrips'))
+const AdminErrands = lazy(() => import('./pages/Admin/AdminErrands'))
+const AdminTravelDestinations = lazy(() => import('./pages/Admin/AdminTravelDestinations'))
 
 export default function App() {
   return (
@@ -93,6 +103,13 @@ export default function App() {
           <Route path="/promociones" element={<Promotions />} />
           <Route path="/promociones/:slug/editar" element={<EditPromotion />} />
           <Route path="/promocion/:slug" element={<PromotionDetail />} />
+          <Route path="/viajes" element={<Travel />} />
+          <Route path="/viajes/publicar" element={<CreateTrip />} />
+          <Route path="/viajes/:slug/editar" element={<EditTrip />} />
+          <Route path="/viaje/:slug" element={<TripDetail />} />
+          <Route path="/comisiones/publicar" element={<CreateErrand />} />
+          <Route path="/comisiones/:slug/editar" element={<EditErrand />} />
+          <Route path="/comision/:slug" element={<ErrandDetail />} />
           <Route path="/ingresar" element={<Auth mode="login" />} />
           <Route path="/registro" element={<Auth mode="register" />} />
           <Route path="/perfil" element={<Profile />} />
@@ -117,6 +134,9 @@ export default function App() {
             <Route path="eventos" element={<AdminEvents />} />
             <Route path="categorias-eventos" element={<AdminEventCategories />} />
             <Route path="promociones" element={<AdminPromotions />} />
+            <Route path="viajes" element={<AdminTrips />} />
+            <Route path="comisiones" element={<AdminErrands />} />
+            <Route path="destinos" element={<AdminTravelDestinations />} />
             <Route path="usuarios" element={<AdminUsers />} />
             <Route path="categorias" element={<AdminCategories />} />
             <Route path="reportes" element={<AdminReports />} />

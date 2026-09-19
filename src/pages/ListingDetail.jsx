@@ -161,7 +161,9 @@ export default function ListingDetail() {
         </button>
       </div>
 
-      {reportOpen && <ReportModal listingId={listing.id} onClose={() => setReportOpen(false)} />}
+      {reportOpen && (
+        <ReportModal targetType="listing" targetId={listing.id} onClose={() => setReportOpen(false)} />
+      )}
       {lightboxOpen && (
         <ImageLightbox images={images} startIndex={activeImage} onClose={() => setLightboxOpen(false)} />
       )}

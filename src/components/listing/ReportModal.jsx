@@ -12,12 +12,15 @@ const REASONS = [
   { value: 'otro', label: 'Otro' },
 ]
 
-export default function ReportModal({ listingId, onClose }) {
+// targetType: 'listing' | 'trip' | 'errand'
+export default function ReportModal({ targetType = 'listing', targetId, onClose }) {
   const { user } = useAuth()
   const [reason, setReason] = useState('estafa')
   const [details, setDetails] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+
+  const TARGET_COLUMN = { listing: 'listing_id', trip: 'trip_id', errand: 'errand_id' }[targetType]
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -26,7 +29,7 @@ export default function ReportModal({ listingId, onClose }) {
       return
     }
     const { error: insertError } = await supabase.from('reports').insert({
-      listing_id: listingId,
+      [TARGET_COLUMN]: targetId,
       reporter_id: user.id,
       reason,
       details,

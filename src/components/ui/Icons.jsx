@@ -188,6 +188,25 @@ export function PercentIcon({ size = 20, className }) {
   )
 }
 
+export function CarIcon({ size = 20, className }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M5 17h14M5 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM19 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM3 17V11l2-5h14l2 5v6" />
+      <path d="M5 11h14" />
+    </svg>
+  )
+}
+
+export function PackageIcon({ size = 20, className }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...base}>
+      <path d="M21 8l-9-5-9 5 9 5 9-5z" />
+      <path d="M3 8v8l9 5 9-5V8" />
+      <path d="M12 13v8" />
+    </svg>
+  )
+}
+
 export function BadgeCheckIcon({ size = 16, className }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" className={className} fill="currentColor">

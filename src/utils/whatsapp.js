@@ -146,3 +146,58 @@ export async function shareEvent(event, url) {
   await navigator.clipboard.writeText(text)
   return 'copied'
 }
+
+// Genera el link para contactar sobre un viaje por WhatsApp
+export function buildWhatsappTripLink(trip, destinationName) {
+  const phone = cleanPhoneNumber(trip.whatsapp)
+  const message = `Hola! Vi tu publicación en ${APP_NAME} sobre el viaje a ${destinationName || 'destino'} del ${trip.trip_date}. Quería consultar por los lugares disponibles.`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+}
+
+export function buildTripShareText(trip, destinationName, url) {
+  return `Viaje a ${destinationName || ''}\n${trip.trip_date}\n\nVer en ${APP_NAME}:\n${url}`
+}
+
+export async function shareTrip(trip, destinationName, url) {
+  const text = buildTripShareText(trip, destinationName, url)
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: `Viaje a ${destinationName || ''}`, text, url })
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  await navigator.clipboard.writeText(text)
+  return 'copied'
+}
+
+// Genera el link para contactar sobre una comisión/encomienda por WhatsApp
+export function buildWhatsappErrandLink(errand, title) {
+  const phone = cleanPhoneNumber(errand.whatsapp)
+  const verb = errand.mode === 'ofrezco' ? 'que ofrecés' : 'que necesitás'
+  const message = `Hola! Vi en ${APP_NAME} ${verb}: "${title}". Quería consultarte.`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+}
+
+export function buildErrandShareText(errand, title, url) {
+  return `${title}\n\nVer en ${APP_NAME}:\n${url}`
+}
+
+export async function shareErrand(errand, title, url) {
+  const text = buildErrandShareText(errand, title, url)
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text, url })
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  await navigator.clipboard.writeText(text)
+  return 'copied'
+}
