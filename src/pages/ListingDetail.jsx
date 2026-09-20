@@ -134,7 +134,7 @@ export default function ListingDetail() {
             <ShareIcon size={18} />
             Compartir
           </button>
-          <FavoriteButton listingId={listing.id} variant="detail" />
+          <FavoriteButton targetType="listing" targetId={listing.id} variant="detail" />
         </div>
 
         {shareStatus && <p className="listing-detail-share-status">{shareStatus}</p>}

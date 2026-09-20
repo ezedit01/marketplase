@@ -4,12 +4,13 @@ import { useFavorites } from '../../hooks/useFavorites'
 import { useAuth } from '../../hooks/useAuth'
 import './FavoriteButton.css'
 
+// targetType: 'listing' | 'business' | 'service'
 // variant: 'card' (chico, esquina de la tarjeta) | 'detail' (grande, con texto)
-export default function FavoriteButton({ listingId, variant = 'card' }) {
+export default function FavoriteButton({ targetType = 'listing', targetId, variant = 'card' }) {
   const { user } = useAuth()
   const { isFavorite, toggleFavorite } = useFavorites()
   const navigate = useNavigate()
-  const active = isFavorite(listingId)
+  const active = isFavorite(targetType, targetId)
 
   async function handleClick(e) {
     e.preventDefault()
@@ -19,7 +20,7 @@ export default function FavoriteButton({ listingId, variant = 'card' }) {
       navigate(`/ingresar?next=${encodeURIComponent(window.location.pathname)}`)
       return
     }
-    toggleFavorite(listingId)
+    toggleFavorite(targetType, targetId)
   }
 
   if (variant === 'detail') {
@@ -31,6 +32,19 @@ export default function FavoriteButton({ listingId, variant = 'card' }) {
       >
         <HeartIcon size={19} filled={active} />
         {active ? 'Guardado' : 'Guardar'}
+      </button>
+    )
+  }
+
+  if (variant === 'row') {
+    return (
+      <button
+        className={`favorite-btn favorite-btn-row ${active ? 'active' : ''}`}
+        onClick={handleClick}
+        aria-pressed={active}
+        aria-label={active ? 'Quitar de favoritos' : 'Guardar en favoritos'}
+      >
+        <HeartIcon size={17} filled={active} />
       </button>
     )
   }

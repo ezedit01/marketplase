@@ -28,7 +28,7 @@ export default function ListingCard({ listing }) {
   return (
     <Link to={`/producto/${listing.slug}`} className="listing-card">
       <div className="listing-card-image">
-        <FavoriteButton listingId={listing.id} variant="card" />
+        <FavoriteButton targetType="listing" targetId={listing.id} variant="card" />
         {mainImage ? (
           <img src={mainImage} alt={listing.title} loading="lazy" />
         ) : (

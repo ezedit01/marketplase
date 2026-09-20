@@ -33,6 +33,7 @@ está preparada para crecer hacia negocios, servicios, empleos y más — ver
 11. Y `supabase/migrations/009_events_and_promotions.sql`. Eventos y promociones (Etapa 5, parte 2): completa el roadmap original.
 12. Y `supabase/migrations/010_premium_businesses.sql`. Perfiles comerciales premium: badge y portada. Por ahora el admin activa `is_premium` a mano — todavía no hay cobro conectado.
 13. Y `supabase/migrations/011_travel_and_errands.sql`. PUNTO Viajes: viajes compartidos, comisiones/encomiendas, destinos, y extiende `reports` para poder reportar viajes y comisiones (no solo productos).
+14. Y `supabase/migrations/012_favorites_extended.sql`. Extiende favoritos a negocios y servicios (antes solo funcionaba con productos).
 
 Si algo falla porque una extensión no está disponible en tu plan, avisame y lo resolvemos.
 
@@ -194,6 +195,7 @@ supabase/
     009_events_and_promotions.sql         Eventos y promociones (promos ligadas a negocios)
     010_premium_businesses.sql            Perfiles comerciales premium (badge + portada)
     011_travel_and_errands.sql            PUNTO Viajes: viajes, comisiones/encomiendas, destinos, extiende reports
+    012_favorites_extended.sql            Favoritos de negocios y servicios (antes solo productos)
 netlify/
   edge-functions/og-listing.js  Previews de Open Graph para Netlify
 netlify.toml                    Config de build, redirects SPA y edge function (Netlify)

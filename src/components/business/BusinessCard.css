@@ -83,7 +83,7 @@
 .business-card-featured {
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px;
   background: var(--color-featured);
   color: #fff;
   font-size: 10px;

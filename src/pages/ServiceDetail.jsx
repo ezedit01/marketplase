@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../hooks/useAuth'
 import { buildWhatsappServiceLink, shareService } from '../utils/whatsapp'
 import { WhatsappIcon, ShareIcon, MapPinIcon, WrenchIcon, EditIcon } from '../components/ui/Icons'
+import FavoriteButton from '../components/listing/FavoriteButton'
 import './BusinessDetail.css'
 
 export default function ServiceDetail() {
@@ -105,6 +106,7 @@ export default function ServiceDetail() {
           <ShareIcon size={18} />
           Compartir
         </button>
+        <FavoriteButton targetType="service" targetId={service.id} variant="detail" />
       </div>
 
       {shareStatus && <p className="business-detail-share-status">{shareStatus}</p>}

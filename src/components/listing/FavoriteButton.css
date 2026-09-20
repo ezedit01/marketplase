@@ -43,3 +43,8 @@
 .favorite-btn-detail.active {
   border-color: #e11d48;
 }
+
+.favorite-btn-row {
+  flex-shrink: 0;
+  padding: 6px;
+}

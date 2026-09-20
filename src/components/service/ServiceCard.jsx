@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { WrenchIcon, MapPinIcon } from '../ui/Icons'
+import FavoriteButton from '../listing/FavoriteButton'
 import './ServiceCard.css'
 
 export default function ServiceCard({ service, categoryName }) {
@@ -23,6 +24,7 @@ export default function ServiceCard({ service, categoryName }) {
           </p>
         )}
       </div>
+      <FavoriteButton targetType="service" targetId={service.id} variant="row" />
       {service.featured && <span className="service-card-featured">Destacado</span>}
     </Link>
   )

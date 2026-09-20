@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { StoreIcon, MapPinIcon, BadgeCheckIcon } from '../ui/Icons'
+import FavoriteButton from '../listing/FavoriteButton'
 import './BusinessCard.css'
 
 export default function BusinessCard({ business, categoryName }) {
@@ -28,6 +29,7 @@ export default function BusinessCard({ business, categoryName }) {
           </p>
         )}
       </div>
+      <FavoriteButton targetType="business" targetId={business.id} variant="row" />
       {business.featured && <span className="business-card-featured">Destacado</span>}
     </Link>
   )

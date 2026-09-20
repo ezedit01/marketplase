@@ -6,6 +6,7 @@ import { usePromotions } from '../hooks/usePromotions'
 import { buildWhatsappBusinessLink, shareBusiness } from '../utils/whatsapp'
 import { WhatsappIcon, ShareIcon, MapPinIcon, ClockIcon, StoreIcon, EditIcon, PlusIcon, BadgeCheckIcon } from '../components/ui/Icons'
 import PromotionCard from '../components/promotion/PromotionCard'
+import FavoriteButton from '../components/listing/FavoriteButton'
 import './BusinessDetail.css'
 
 export default function BusinessDetail() {
@@ -122,6 +123,7 @@ export default function BusinessDetail() {
           <ShareIcon size={18} />
           Compartir
         </button>
+        <FavoriteButton targetType="business" targetId={business.id} variant="detail" />
       </div>
 
       {shareStatus && <p className="business-detail-share-status">{shareStatus}</p>}
