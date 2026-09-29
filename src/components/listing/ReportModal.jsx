@@ -12,7 +12,7 @@ const REASONS = [
   { value: 'otro', label: 'Otro' },
 ]
 
-// targetType: 'listing' | 'trip' | 'errand'
+// targetType: 'listing' | 'trip' | 'errand' | 'business' | 'service' | 'job' | 'event'
 export default function ReportModal({ targetType = 'listing', targetId, onClose }) {
   const { user } = useAuth()
   const [reason, setReason] = useState('estafa')
@@ -20,7 +20,15 @@ export default function ReportModal({ targetType = 'listing', targetId, onClose 
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
-  const TARGET_COLUMN = { listing: 'listing_id', trip: 'trip_id', errand: 'errand_id' }[targetType]
+  const TARGET_COLUMN = {
+    listing: 'listing_id',
+    trip: 'trip_id',
+    errand: 'errand_id',
+    business: 'business_id',
+    service: 'service_id',
+    job: 'job_id',
+    event: 'event_id',
+  }[targetType]
 
   async function handleSubmit(e) {
     e.preventDefault()

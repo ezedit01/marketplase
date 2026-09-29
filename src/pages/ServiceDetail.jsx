@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 import { buildWhatsappServiceLink, shareService } from '../utils/whatsapp'
 import { WhatsappIcon, ShareIcon, MapPinIcon, WrenchIcon, EditIcon } from '../components/ui/Icons'
 import FavoriteButton from '../components/listing/FavoriteButton'
+import ReportModal from '../components/listing/ReportModal'
 import './BusinessDetail.css'
 
 export default function ServiceDetail() {
@@ -14,6 +15,7 @@ export default function ServiceDetail() {
   const [categoryName, setCategoryName] = useState('')
   const [loading, setLoading] = useState(true)
   const [shareStatus, setShareStatus] = useState('')
+  const [reportOpen, setReportOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -110,6 +112,14 @@ export default function ServiceDetail() {
       </div>
 
       {shareStatus && <p className="business-detail-share-status">{shareStatus}</p>}
+
+      <button className="listing-detail-report-link" onClick={() => setReportOpen(true)}>
+        Reportar servicio
+      </button>
+
+      {reportOpen && (
+        <ReportModal targetType="service" targetId={service.id} onClose={() => setReportOpen(false)} />
+      )}
     </div>
   )
 }

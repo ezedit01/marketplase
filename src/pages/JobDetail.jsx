@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 import { buildWhatsappJobLink, shareJob } from '../utils/whatsapp'
 import { employmentTypeLabel } from '../utils/jobs'
 import { WhatsappIcon, ShareIcon, MapPinIcon, BriefcaseIcon, TagIcon, EditIcon, CheckIcon } from '../components/ui/Icons'
+import ReportModal from '../components/listing/ReportModal'
 import './BusinessDetail.css'
 
 export default function JobDetail() {
@@ -14,6 +15,7 @@ export default function JobDetail() {
   const [categoryName, setCategoryName] = useState('')
   const [loading, setLoading] = useState(true)
   const [shareStatus, setShareStatus] = useState('')
+  const [reportOpen, setReportOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -129,6 +131,14 @@ export default function JobDetail() {
       )}
 
       {shareStatus && <p className="business-detail-share-status">{shareStatus}</p>}
+
+      <button className="listing-detail-report-link" onClick={() => setReportOpen(true)}>
+        Reportar publicación
+      </button>
+
+      {reportOpen && (
+        <ReportModal targetType="job" targetId={job.id} onClose={() => setReportOpen(false)} />
+      )}
     </div>
   )
 }

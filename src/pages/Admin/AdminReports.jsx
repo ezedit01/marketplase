@@ -18,7 +18,9 @@ export default function AdminReports() {
     setLoading(true)
     const { data } = await supabase
       .from('reports')
-      .select('id, reason, details, status, created_at, listings(title, slug), trips(slug, origin), errands(slug, errand_type)')
+      .select(
+        'id, reason, details, status, created_at, listings(title, slug), trips(slug, origin), errands(slug, errand_type), businesses(name, slug), services(title, slug), jobs(title, slug), events(title, slug)'
+      )
       .order('created_at', { ascending: false })
     setReports(data || [])
     setLoading(false)
@@ -37,6 +39,10 @@ export default function AdminReports() {
     if (r.listings) return <Link to={`/producto/${r.listings.slug}`}>{r.listings.title}</Link>
     if (r.trips) return <Link to={`/viaje/${r.trips.slug}`}>Viaje desde {r.trips.origin}</Link>
     if (r.errands) return <Link to={`/comision/${r.errands.slug}`}>Comisión: {r.errands.errand_type}</Link>
+    if (r.businesses) return <Link to={`/negocio/${r.businesses.slug}`}>{r.businesses.name}</Link>
+    if (r.services) return <Link to={`/servicio/${r.services.slug}`}>{r.services.title}</Link>
+    if (r.jobs) return <Link to={`/empleo/${r.jobs.slug}`}>{r.jobs.title}</Link>
+    if (r.events) return <Link to={`/evento/${r.events.slug}`}>{r.events.title}</Link>
     return '(eliminado)'
   }
 

@@ -7,6 +7,7 @@ import { buildWhatsappBusinessLink, shareBusiness } from '../utils/whatsapp'
 import { WhatsappIcon, ShareIcon, MapPinIcon, ClockIcon, StoreIcon, EditIcon, PlusIcon, BadgeCheckIcon } from '../components/ui/Icons'
 import PromotionCard from '../components/promotion/PromotionCard'
 import FavoriteButton from '../components/listing/FavoriteButton'
+import ReportModal from '../components/listing/ReportModal'
 import './BusinessDetail.css'
 
 export default function BusinessDetail() {
@@ -16,6 +17,7 @@ export default function BusinessDetail() {
   const [categoryName, setCategoryName] = useState('')
   const [loading, setLoading] = useState(true)
   const [shareStatus, setShareStatus] = useState('')
+  const [reportOpen, setReportOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -149,6 +151,14 @@ export default function BusinessDetail() {
           </div>
         )}
       </div>
+
+      <button className="listing-detail-report-link" onClick={() => setReportOpen(true)}>
+        Reportar negocio
+      </button>
+
+      {reportOpen && (
+        <ReportModal targetType="business" targetId={business.id} onClose={() => setReportOpen(false)} />
+      )}
     </div>
   )
 }

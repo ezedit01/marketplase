@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 import { buildWhatsappEventLink, shareEvent } from '../utils/whatsapp'
 import { formatEventDate } from '../utils/dates'
 import { WhatsappIcon, ShareIcon, MapPinIcon, CalendarIcon, EditIcon } from '../components/ui/Icons'
+import ReportModal from '../components/listing/ReportModal'
 import './BusinessDetail.css'
 
 export default function EventDetail() {
@@ -14,6 +15,7 @@ export default function EventDetail() {
   const [categoryName, setCategoryName] = useState('')
   const [loading, setLoading] = useState(true)
   const [shareStatus, setShareStatus] = useState('')
+  const [reportOpen, setReportOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -122,6 +124,14 @@ export default function EventDetail() {
       </div>
 
       {shareStatus && <p className="business-detail-share-status">{shareStatus}</p>}
+
+      <button className="listing-detail-report-link" onClick={() => setReportOpen(true)}>
+        Reportar evento
+      </button>
+
+      {reportOpen && (
+        <ReportModal targetType="event" targetId={event.id} onClose={() => setReportOpen(false)} />
+      )}
     </div>
   )
 }
